@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Tahoma" Size="8.25" />
+  <Class Name="WiiDeviceLibrary.BasicIRBeacon">
+    <Position X="6" Y="8" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>Interface\BasicIRBeacon.cs</FileName>
+      <HashCode>AAAAAAAAIAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAYAA=</HashCode>
+    </TypeIdentifier>
+    <Members>
+      <Field Name="_X" Hidden="true" />
+      <Field Name="_Y" Hidden="true" />
+    </Members>
+  </Class>
+  <Class Name="WiiDeviceLibrary.ExtendedIRBeacon">
+    <Position X="6" Y="9.5" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>Interface\ExtendedIRBeacon.cs</FileName>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Members>
+      <Field Name="_Size" Hidden="true" />
+    </Members>
+  </Class>
+  <Class Name="WiiDeviceLibrary.FullIRBeacon">
+    <Position X="6" Y="11" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>Interface\FullIRBeacon.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAQACAACAAYAAQAABAAAEAAAACAAAA=</HashCode>
+    </TypeIdentifier>
+    <Members>
+      <Field Name="_Intensity" Hidden="true" />
+      <Field Name="_XMax" Hidden="true" />
+      <Field Name="_XMin" Hidden="true" />
+      <Field Name="_YMax" Hidden="true" />
+      <Field Name="_YMin" Hidden="true" />
+    </Members>
+  </Class>
+  <Class Name="WiiDeviceLibrary.Accelerometer">
+    <Position X="6" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Interface\Accelerometer.cs</FileName>
+      <HashCode>AAAAAAAAAAABCAAAAAAAEAAAAAAAQAAAAAAIAAAACAA=</HashCode>
+    </TypeIdentifier>
+    <Members>
+      <Field Name="_Calibrated" Hidden="true" />
+      <Field Name="_Calibration" Hidden="true" />
+      <Field Name="_Raw" Hidden="true" />
+      <Method Name="Accelerometer" Hidden="true" />
+    </Members>
+  </Class>
+  <Interface Name="WiiDeviceLibrary.IWiiDevice">
+    <Position X="3.25" Y="3.25" Width="3.25" />
+    <TypeIdentifier>
+      <FileName>Interface\IWiiDevice.cs</FileName>
+      <HashCode>AAAAAAAEAAAAAQIAAAAAAAAAAAEAgAABUAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ReportingMode" />
+    </ShowAsAssociation>
+    <Members>
+      <Method Name="Initialize" Hidden="true" />
+    </Members>
+    <AssociationLine Name="ReportingMode" Type="WiiDeviceLibrary.ReportingMode" FixedFromPoint="true">
+      <Path>
+        <Point X="3.25" Y="3.625" />
+        <Point X="2" Y="3.625" />
+      </Path>
+    </AssociationLine>
+  </Interface>
+  <Interface Name="WiiDeviceLibrary.IWiimote">
+    <Position X="3.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Interface\IWiimote.cs</FileName>
+      <HashCode>AAAQAwAAAAAkEAAAAAAAAAAAAAAAAYAAQAAAAAAAAEA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Leds" />
+      <Property Name="Buttons" />
+      <Property Name="Accelerometer" />
+      <Property Name="Extension" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="IRBeacons" />
+    </ShowAsCollectionAssociation>
+    <InheritanceLine Type="WiiDeviceLibrary.IWiiDevice" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.5" Y="5.796" />
+        <Point X="4.5" Y="7" />
+      </Path>
+    </InheritanceLine>
+    <AssociationLine Name="Leds" Type="WiiDeviceLibrary.WiimoteLeds" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3.25" Y="7.25" />
+        <Point X="2.625" Y="7.25" />
+        <Point X="2.625" Y="7.25" />
+        <Point X="2" Y="7.25" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.461" Y="0.055" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Buttons" Type="WiiDeviceLibrary.WiimoteButtons" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3.25" Y="9" />
+        <Point X="2.875" Y="9" />
+        <Point X="2.875" Y="9" />
+        <Point X="2" Y="9" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.383" Y="0.078" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="IRBeacons" Type="WiiDeviceLibrary.BasicIRBeacon" FixedToPoint="true">
+      <Path>
+        <Point X="4.75" Y="8.375" />
+        <Point X="6" Y="8.375" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.347" Y="0.078" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Accelerometer" Type="WiiDeviceLibrary.Accelerometer" ManuallyRouted="true" FixedFromPoint="true">
+      <Path>
+        <Point X="4.75" Y="7.188" />
+        <Point X="5.125" Y="7.188" />
+        <Point X="5.125" Y="7.188" />
+        <Point X="6" Y="7.188" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.074" Y="0.06" />
+      </MemberNameLabel>
+    </AssociationLine>
+  </Interface>
+  <Interface Name="WiiDeviceLibrary.IWiimoteExtension" Collapsed="true">
+    <Position X="3" Y="10.25" Width="2" />
+    <TypeIdentifier>
+      <FileName>Interface\IWiimoteExtension.cs</FileName>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAACAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="WiiDeviceLibrary.ReportingMode">
+    <Position X="0.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Interface\ReportingMode.cs</FileName>
+      <HashCode>kAAiAAAAAAAgAAAAEAAAAAAAAAAAAQAAAAIAAAMAABA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="WiiDeviceLibrary.WiimoteButtons">
+    <Position X="0.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Interface\WiimoteButtons.cs</FileName>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAABAAQAAAAACCiAIAEAAII=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="WiiDeviceLibrary.WiimoteLeds">
+    <Position X="0.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Interface\WiimoteLeds.cs</FileName>
+      <HashCode>aAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+</ClassDiagram>

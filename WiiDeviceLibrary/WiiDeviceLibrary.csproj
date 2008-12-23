@@ -1,0 +1,176 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{07CC268B-22FE-4B59-AAE4-29EC88EEDE50}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WiiDeviceLibrary</RootNamespace>
+    <AssemblyName>WiiDeviceLibrary</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <OutputType>Library</OutputType>
+    <AssemblyName>WiiDeviceLibrary</AssemblyName>
+    <RootNamespace>WiiDeviceLibrary</RootNamespace>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <OutputType>Library</OutputType>
+    <AssemblyName>WiiDeviceLibrary</AssemblyName>
+    <DebugSymbols>true</DebugSymbols>
+    <RootNamespace>WiiDeviceLibrary</RootNamespace>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <OutputType>Library</OutputType>
+    <AssemblyName>WiiDeviceLibrary</AssemblyName>
+    <RootNamespace>WiiDeviceLibrary</RootNamespace>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <OutputType>Library</OutputType>
+    <AssemblyName>WiiDeviceLibrary</AssemblyName>
+    <DebugSymbols>true</DebugSymbols>
+    <RootNamespace>WiiDeviceLibrary</RootNamespace>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Bluetooth\Bluesoleil\BluesoleilDeviceInfo.cs" />
+    <Compile Include="Bluetooth\Bluesoleil\BluesoleilDeviceProvider.cs" />
+    <Compile Include="Bluetooth\Bluesoleil\BluesoleilDeviceProviderFactory.cs" />
+    <Compile Include="Bluetooth\Bluesoleil\BluesoleilExceptions.cs" />
+    <Compile Include="Bluetooth\Bluesoleil\BluesoleilService.cs" />
+    <Compile Include="Bluetooth\Bluesoleil\BluetoothConnection.cs" />
+    <Compile Include="Bluetooth\Bluesoleil\BluetoothConnectionEventArgs.cs" />
+    <Compile Include="Bluetooth\Bluesoleil\BluetoothConnectionStatus.cs" />
+    <Compile Include="Bluetooth\Bluesoleil\BluetoothDevice.cs" />
+    <Compile Include="Bluetooth\Bluesoleil\BluetoothDeviceEventArgs.cs" />
+    <Compile Include="Bluetooth\Bluesoleil\BluetoothDeviceInfoEventArgs.cs" />
+    <Compile Include="Bluetooth\Bluesoleil\BluetoothService.cs" />
+    <Compile Include="Bluetooth\Bluesoleil\NativeMethods.cs" />
+    <Compile Include="Bluetooth\BluetoothAddress.cs" />
+    <Compile Include="Bluetooth\Bluez\BluezDeviceProviderFactory.cs" />
+    <Compile Include="Bluetooth\DeviceProviderFactoryHelper.cs" />
+    <Compile Include="Bluetooth\MsBluetooth\MsBluetoothDeviceProviderFactory.cs" />
+    <Compile Include="Bluetooth\MsHid\MsHidSetOutputReportStream.cs" />
+    <Compile Include="Bluetooth\MsHid\MsHidHelper.cs" />
+    <Compile Include="Bluetooth\MsBluetooth\NativeMethods.cs" />
+    <Compile Include="Bluetooth\MsBluetooth\MsBluetoothDeviceProvider.cs" />
+    <Compile Include="Bluetooth\MsBluetooth\MsBluetoothWiimoteInfo.cs" />
+    <Compile Include="Bluetooth\Bluez\NativeMethods.cs" />
+    <Compile Include="Bluetooth\Bluez\BluezStream.cs" />
+    <Compile Include="Bluetooth\Bluez\BluezDeviceProvider.cs" />
+    <Compile Include="Bluetooth\MsHid\MsHidDeviceProviderFactory.cs" />
+    <Compile Include="Bluetooth\MsHid\MsHidWiimoteProviderHelper.cs" />
+    <Compile Include="Extensions\ClassicControllerButtons.cs" />
+    <Compile Include="Extensions\ClassicControllerExtension.cs" />
+    <Compile Include="Extensions\ClassicControllerExtensionFactory.cs" />
+    <Compile Include="Extensions\GuitarButtons.cs" />
+    <Compile Include="Extensions\GuitarExtension.cs" />
+    <Compile Include="Extensions\GuitarExtensionFactory.cs" />
+    <Compile Include="Extensions\NunchukButtons.cs" />
+    <Compile Include="Bluetooth\MsHid\NativeMethods.cs" />
+    <Compile Include="Bluetooth\MsHid\MsHidStream.cs" />
+    <Compile Include="Bluetooth\MsHid\MsHidWiimoteInfo.cs" />
+    <Compile Include="Bluetooth\MsHid\MsHidDeviceProvider.cs" />
+    <Compile Include="Interface\Accelerometer.cs" />
+    <Compile Include="Interface\AccelerometerAxes.cs" />
+    <Compile Include="Interface\AnalogStick.cs" />
+    <Compile Include="Interface\DeviceProviderRegistry.cs" />
+    <Compile Include="Interface\IBluetoothDeviceInfo.cs" />
+    <Compile Include="Interface\IDeviceProviderFactory.cs" />
+    <Compile Include="Interface\IWiiDevice.cs" />
+    <Compile Include="Interface\DeviceConnectException.cs" />
+    <Compile Include="Interface\Pcm8ToAdpcm4Stream.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interface\PressureCalibration.cs" />
+    <Compile Include="Interface\ReportingMode.cs" />
+    <Compile Include="Interface\WiimoteExtensionRegistry.cs" />
+    <Compile Include="Extensions\NunchukExtensionFactory.cs" />
+    <Compile Include="Extensions\NunchukExtension.cs" />
+    <Compile Include="Interface\DummyExtension.cs" />
+    <Compile Include="Interface\InputReport.cs" />
+    <Compile Include="Interface\InvalidExtension.cs" />
+    <Compile Include="Interface\OutputReport.cs" />
+    <Compile Include="Interface\ReportWiimote.cs" />
+    <Compile Include="Interface\UnknownExtension.cs" />
+    <Compile Include="Interface\ExtendedIRBeacon.cs" />
+    <Compile Include="Interface\FullIRBeacon.cs" />
+    <Compile Include="Interface\BasicIRBeacon.cs" />
+    <Compile Include="Interface\IRMode.cs" />
+    <Compile Include="Interface\IWiimoteExtensionFactory.cs" />
+    <Compile Include="Interface\IWiimote.cs" />
+    <Compile Include="Interface\IWiimoteExtension.cs" />
+    <Compile Include="Interface\IDeviceInfo.cs" />
+    <Compile Include="Interface\IDeviceProvider.cs" />
+    <Compile Include="Interface\WiimoteSpeakerStream.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Interface\WiimoteButtons.cs" />
+    <Compile Include="Interface\DeviceEventArgs.cs" />
+    <Compile Include="Interface\DeviceInfoEventArgs.cs" />
+    <Compile Include="Interface\WiimoteLeds.cs" />
+    <Compile Include="Interface\IBalanceBoard.cs" />
+    <Compile Include="Interface\IDevice.cs" />
+    <Compile Include="Interface\ReportBalanceBoard.cs" />
+    <Compile Include="Bluetooth\Bluez\BluezDeviceInfo.cs" />
+    <Compile Include="Interface\ReportDevice.cs" />
+    <Compile Include="Interface\AnalogStickCalibration.cs" />
+    <Compile Include="Interface\AccelerometerCalibration.cs" />
+    <Compile Include="Interface\AnalogStickAxes.cs" />
+    <Compile Include="Interface\WiimoteExtensionEventArgs.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="GlobalDiagram.cd" />
+    <None Include="DeviceProviderDiagram.cd" />
+    <None Include="WiimoteDiagram.cd" />
+    <None Include="WiimoteExtensionDiagram.cd" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Tahoma" Size="8.25" />
+  <Class Name="WiiDeviceLibrary.DummyExtension" Collapsed="true">
+    <Position X="5.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Interface\DummyExtension.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAgAIAAAAAAAAAAAAAQAAAACAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WiiDeviceLibrary.InvalidExtension" Collapsed="true">
+    <Position X="4.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Interface\InvalidExtension.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WiiDeviceLibrary.UnknownExtension" Collapsed="true">
+    <Position X="6.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Interface\UnknownExtension.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WiiDeviceLibrary.Extensions.ClassicControllerExtension" Collapsed="true">
+    <Position X="10" Y="2.25" Width="2.5" />
+    <TypeIdentifier>
+      <FileName>Extensions\ClassicControllerExtension.cs</FileName>
+      <HashCode>AARAAAAABEAxAgAIAAAAAMAABAAAIQAAAACAAAAIAAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WiiDeviceLibrary.Extensions.GuitarExtension" Collapsed="true">
+    <Position X="12.75" Y="2.25" Width="2.5" />
+    <TypeIdentifier>
+      <FileName>Extensions\GuitarExtension.cs</FileName>
+      <HashCode>AAQAAAAAAEAhAgAYAAAAAAAAgAAAAQAAAgCAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WiiDeviceLibrary.Extensions.NunchukExtension" Collapsed="true">
+    <Position X="7.25" Y="2.25" Width="2.5" />
+    <TypeIdentifier>
+      <FileName>Extensions\NunchukExtension.cs</FileName>
+      <HashCode>AAQAAgAAAAAhAgAYAAEAAEAAgAAAAQAAAACAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WiiDeviceLibrary.Extensions.ClassicControllerExtensionFactory" Collapsed="true">
+    <Position X="10" Y="1" Width="2.5" />
+    <TypeIdentifier>
+      <FileName>Extensions\ClassicControllerExtensionFactory.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAEAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WiiDeviceLibrary.Extensions.GuitarExtensionFactory" Collapsed="true">
+    <Position X="12.75" Y="1" Width="2.5" />
+    <TypeIdentifier>
+      <FileName>Extensions\GuitarExtensionFactory.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAEAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WiiDeviceLibrary.Extensions.NunchukExtensionFactory" Collapsed="true">
+    <Position X="7.25" Y="1" Width="2.5" />
+    <TypeIdentifier>
+      <FileName>Extensions\NunchukExtensionFactory.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAEAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WiiDeviceLibrary.WiimoteExtensionRegistry">
+    <Position X="0.5" Y="1" Width="2" />
+    <TypeIdentifier>
+      <FileName>Interface\WiimoteExtensionRegistry.cs</FileName>
+      <HashCode>CAAAAAAAAAAAAAAAEAAAAAAAAAABAAAAAEAAAAAAEAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Factories" />
+    </ShowAsCollectionAssociation>
+    <Members>
+      <Field Name="_Factories" Hidden="true" />
+      <Method Name="Register" Hidden="true" />
+      <Method Name="TryGetValue" Hidden="true" />
+      <Method Name="Unregister" Hidden="true" />
+      <Method Name="WiimoteExtensionRegistry" Hidden="true" />
+    </Members>
+  </Class>
+  <Interface Name="WiiDeviceLibrary.IWiimote">
+    <Position X="0.5" Y="2.25" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>Interface\IWiimote.cs</FileName>
+      <HashCode>AAAQAwAAAAAkEAAAAAAAAAAAAAAAAYAAQAAAAAAAAEA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Extension" />
+    </ShowAsAssociation>
+    <Members>
+      <Property Name="Accelerometer" Hidden="true" />
+      <Property Name="Buttons" Hidden="true" />
+      <Property Name="IRBeacons" Hidden="true" />
+      <Property Name="IsRumbling" Hidden="true" />
+      <Property Name="IsSpeakerEnabled" Hidden="true" />
+      <Property Name="Leds" Hidden="true" />
+      <Method Name="SendSpeakerData" Hidden="true" />
+    </Members>
+    <AssociationLine Name="Extension" Type="WiiDeviceLibrary.IWiimoteExtension">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.289" Y="0.079" />
+      </MemberNameLabel>
+    </AssociationLine>
+  </Interface>
+  <Interface Name="WiiDeviceLibrary.IWiimoteExtension">
+    <Position X="3.5" Y="2.25" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>Interface\IWiimoteExtension.cs</FileName>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAACAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Members>
+      <Method Name="Detached" Hidden="true" />
+      <Method Name="ParseExtensionData" Hidden="true" />
+      <Property Name="Wiimote" Hidden="true" />
+    </Members>
+  </Interface>
+  <Interface Name="WiiDeviceLibrary.IWiimoteExtensionFactory" Collapsed="true">
+    <Position X="3.5" Y="1" Width="2" />
+    <TypeIdentifier>
+      <FileName>Interface\IWiimoteExtensionFactory.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAEAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+</ClassDiagram>

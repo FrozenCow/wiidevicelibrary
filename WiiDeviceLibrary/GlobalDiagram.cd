@@ -1,0 +1,331 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Segoe UI" Size="9" />
+  <Class Name="WiiDeviceLibrary.BasicIRBeacon">
+    <Position X="0.5" Y="11.25" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>Interface\BasicIRBeacon.cs</FileName>
+      <HashCode>AAAAAAAAIAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAYAA=</HashCode>
+    </TypeIdentifier>
+    <Members>
+      <Field Name="_X" Hidden="true" />
+      <Field Name="_Y" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="WiiDeviceLibrary.ExtendedIRBeacon">
+    <Position X="0.5" Y="9.75" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>Interface\ExtendedIRBeacon.cs</FileName>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Members>
+      <Field Name="_Size" Hidden="true" />
+    </Members>
+  </Class>
+  <Class Name="WiiDeviceLibrary.FullIRBeacon">
+    <Position X="0.5" Y="7.5" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>Interface\FullIRBeacon.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAQACAACAAYAAQAABAAAEAAAACAAAA=</HashCode>
+    </TypeIdentifier>
+    <Members>
+      <Field Name="_Intensity" Hidden="true" />
+      <Field Name="_XMax" Hidden="true" />
+      <Field Name="_XMin" Hidden="true" />
+      <Field Name="_YMax" Hidden="true" />
+      <Field Name="_YMin" Hidden="true" />
+    </Members>
+  </Class>
+  <Class Name="WiiDeviceLibrary.Extensions.NunchukExtension">
+    <Position X="5.75" Y="15.25" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>Extensions\NunchukExtension.cs</FileName>
+      <HashCode>AAQAAgAAAAAhAgAYAAEAAEAAgAAAAQAAAACAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Accelerometer" />
+      <Property Name="Stick" />
+    </ShowAsAssociation>
+    <Members>
+      <Field Name="_Accelerometer" Hidden="true" />
+      <Field Name="_Buttons" Hidden="true" />
+      <Field Name="_Stick" Hidden="true" />
+      <Field Name="_Wiimote" Hidden="true" />
+      <Method Name="IWiimoteExtension.ParseExtensionData" Hidden="true" />
+      <Method Name="NunchukExtension" Hidden="true" />
+      <Method Name="ReadCalibrationData" Hidden="true" />
+      <Property Name="Wiimote" Hidden="true" />
+    </Members>
+    <AssociationLine Name="Accelerometer" Type="WiiDeviceLibrary.Accelerometer" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.5" Y="15.438" />
+        <Point X="9.344" Y="15.438" />
+        <Point X="9.344" Y="13.353" />
+      </Path>
+    </AssociationLine>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WiiDeviceLibrary.WiimoteExtensionRegistry">
+    <Position X="0.5" Y="13.25" Width="2" />
+    <TypeIdentifier>
+      <FileName>Interface\WiimoteExtensionRegistry.cs</FileName>
+      <HashCode>CAAAAAAAAAAAAAAAEAAAAAAAAAABAAAAAEAAAAAAEAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Factories" />
+    </ShowAsCollectionAssociation>
+    <Members>
+      <Field Name="_Factories" Hidden="true" />
+      <Method Name="WiimoteExtensionRegistry" Hidden="true" />
+    </Members>
+  </Class>
+  <Class Name="WiiDeviceLibrary.Extensions.NunchukExtensionFactory">
+    <Position X="3.5" Y="15.25" Width="2" />
+    <TypeIdentifier>
+      <FileName>Extensions\NunchukExtensionFactory.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAEAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WiiDeviceLibrary.DeviceProviderRegistry">
+    <Position X="0.5" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <FileName>Interface\DeviceProviderRegistry.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAACGAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Factories" />
+    </ShowAsCollectionAssociation>
+    <Members>
+      <Field Name="_Factories" Hidden="true" />
+      <Method Name="DeviceProviderRegistry" Hidden="true" />
+    </Members>
+  </Class>
+  <Class Name="WiiDeviceLibrary.Accelerometer">
+    <Position X="9.25" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Interface\Accelerometer.cs</FileName>
+      <HashCode>AAAAAAAAAAABCAAAAAAAEAAAAAAAQAAAAAAIAAAACAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Raw" />
+      <Property Name="Calibrated" />
+    </ShowAsAssociation>
+    <Members>
+      <Field Name="_Calibrated" Hidden="true" />
+      <Field Name="_Calibration" Hidden="true" />
+      <Field Name="_Raw" Hidden="true" />
+      <Method Name="Accelerometer" Hidden="true" />
+    </Members>
+  </Class>
+  <Class Name="WiiDeviceLibrary.AccelerometerAxes&lt;T&gt;">
+    <Position X="12" Y="12.25" Width="2" />
+    <TypeIdentifier>
+      <FileName>Interface\AccelerometerAxes.cs</FileName>
+      <HashCode>AAAAAAAAIAAAAAAAAAgAAAAAAAQAAAAAAAAAAAAAYAE=</HashCode>
+    </TypeIdentifier>
+    <Members>
+      <Field Name="_X" Hidden="true" />
+      <Field Name="_Y" Hidden="true" />
+      <Field Name="_Z" Hidden="true" />
+      <Method Name="AccelerometerAxes" Hidden="true" />
+    </Members>
+  </Class>
+  <Class Name="WiiDeviceLibrary.AnalogStick">
+    <Position X="9.25" Y="15.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Interface\AnalogStick.cs</FileName>
+      <HashCode>AAAAAAAAAAABCAAAAAAAEAAAAAAAQAAAAAAIAAAACAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Calibrated" />
+      <Property Name="Raw" />
+    </ShowAsAssociation>
+    <Members>
+      <Field Name="_Calibrated" Hidden="true" />
+      <Field Name="_Calibration" Hidden="true" />
+      <Field Name="_Raw" Hidden="true" />
+      <Method Name="AnalogStick" Hidden="true" />
+    </Members>
+    <AssociationLine Name="Calibrated" Type="WiiDeviceLibrary.AnalogStickAxes&lt;T&gt;" FixedToPoint="true">
+      <Path>
+        <Point X="10.75" Y="15.938" />
+        <Point X="12" Y="15.938" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Raw" Type="WiiDeviceLibrary.AnalogStickAxes&lt;T&gt;" FixedFromPoint="true">
+      <Path>
+        <Point X="10.75" Y="16.438" />
+        <Point X="12" Y="16.438" />
+      </Path>
+    </AssociationLine>
+  </Class>
+  <Class Name="WiiDeviceLibrary.AnalogStickAxes&lt;T&gt;">
+    <Position X="12" Y="15.5" Width="2" />
+    <TypeIdentifier>
+      <FileName>Interface\AnalogStickAxes.cs</FileName>
+      <HashCode>AAAAAAAAIAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAYAA=</HashCode>
+    </TypeIdentifier>
+    <Members>
+      <Field Name="_X" Hidden="true" />
+      <Field Name="_Y" Hidden="true" />
+      <Method Name="AnalogStickAxes" Hidden="true" />
+    </Members>
+  </Class>
+  <Interface Name="WiiDeviceLibrary.IWiimote">
+    <Position X="6.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Interface\IWiimote.cs</FileName>
+      <HashCode>AAAQAwAAAAAkEAAAAAAAAAAAAAAAAYAAQAAAAAAAAEA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Leds" />
+      <Property Name="Buttons" />
+      <Property Name="Accelerometer" />
+      <Property Name="Extension" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="IRBeacons" />
+    </ShowAsCollectionAssociation>
+    <AssociationLine Name="IRBeacons" Type="WiiDeviceLibrary.BasicIRBeacon" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.625" Y="11.271" />
+        <Point X="6.625" Y="11.716" />
+        <Point X="2.25" Y="11.716" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Accelerometer" Type="WiiDeviceLibrary.Accelerometer">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.094" Y="0.123" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Extension" Type="WiiDeviceLibrary.IWiimoteExtension" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.125" Y="11.271" />
+        <Point X="7.125" Y="12.26" />
+        <Point X="7.125" Y="12.26" />
+        <Point X="7.125" Y="13.25" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.062" Y="0.361" />
+      </MemberNameLabel>
+    </AssociationLine>
+  </Interface>
+  <Interface Name="WiiDeviceLibrary.IWiimoteExtension">
+    <Position X="5.75" Y="13.25" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>Interface\IWiimoteExtension.cs</FileName>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAACAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WiiDeviceLibrary.IWiimoteExtensionFactory">
+    <Position X="3.5" Y="13.25" Width="2" />
+    <TypeIdentifier>
+      <FileName>Interface\IWiimoteExtensionFactory.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAEAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WiiDeviceLibrary.IWiiDevice">
+    <Position X="6.5" Y="5.5" Width="3.25" />
+    <TypeIdentifier>
+      <FileName>Interface\IWiiDevice.cs</FileName>
+      <HashCode>AAAAAAAEAAAAAQIAAAAAAAAAAAEAgAABUAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ReportingMode" />
+    </ShowAsAssociation>
+    <InheritanceLine Type="WiiDeviceLibrary.IDevice" FixedToPoint="true">
+      <Path>
+        <Point X="9.25" Y="3.555" />
+        <Point X="9.25" Y="5.5" />
+      </Path>
+    </InheritanceLine>
+  </Interface>
+  <Interface Name="WiiDeviceLibrary.IBalanceBoard">
+    <Position X="8.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Interface\IBalanceBoard.cs</FileName>
+      <HashCode>AkAAAAAIAgAAAJAEAAAAIAAAAAAAAAAAEAAAAAABAEA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WiiDeviceLibrary.IDevice">
+    <Position X="8.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Interface\IDevice.cs</FileName>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAgAAAAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="DeviceInfo" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="WiiDeviceLibrary.IDeviceInfo">
+    <Position X="6.25" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>Interface\IDeviceInfo.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WiiDeviceLibrary.IDeviceProvider">
+    <Position X="3.25" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>Interface\IDeviceProvider.cs</FileName>
+      <HashCode>AgAAAAAAAAAAAAAAADAAAJQABAAAAAAAAAAAESAAAAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="FoundDevices" />
+      <Property Name="ConnectedDevices" />
+    </ShowAsCollectionAssociation>
+    <AssociationLine Name="FoundDevices" Type="WiiDeviceLibrary.IDeviceInfo">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.206" Y="0.11" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="ConnectedDevices" Type="WiiDeviceLibrary.IDevice" FixedToPoint="true">
+      <Path>
+        <Point X="5" Y="3.312" />
+        <Point X="8.5" Y="3.312" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="2.223" Y="0.024" />
+      </MemberNameLabel>
+    </AssociationLine>
+  </Interface>
+  <Interface Name="WiiDeviceLibrary.IDeviceProviderFactory">
+    <Position X="0.5" Y="2.25" Width="2.5" />
+    <TypeIdentifier>
+      <FileName>Interface\IDeviceProviderFactory.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAEAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WiiDeviceLibrary.IBluetoothDeviceInfo">
+    <Position X="6.25" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>Interface\IBluetoothDeviceInfo.cs</FileName>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="WiiDeviceLibrary.WiimoteButtons">
+    <Position X="2.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Interface\WiimoteButtons.cs</FileName>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAABAAQAAAAACCiAIAEAAII=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="WiiDeviceLibrary.WiimoteLeds">
+    <Position X="4.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Interface\WiimoteLeds.cs</FileName>
+      <HashCode>aAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="WiiDeviceLibrary.ReportingMode">
+    <Position X="0.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Interface\ReportingMode.cs</FileName>
+      <HashCode>kAAiAAAAAAAgAAAAEAAAAAAAAAAAAQAAAAIAAAMAABA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+</ClassDiagram>

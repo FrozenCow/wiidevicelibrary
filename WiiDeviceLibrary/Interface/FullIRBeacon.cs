@@ -1,0 +1,61 @@
+//    Copyright 2008 Wii Device Library authors
+//
+//    This file is part of Wii Device Library.
+//
+//    Wii Device Library is free software: you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation, either version 3 of the License, or
+//    (at your option) any later version.
+//
+//    Wii Device Library is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU General Public License for more details.
+//
+//    You should have received a copy of the GNU General Public License
+//    along with Wii Device Library.  If not, see <http://www.gnu.org/licenses/>.
+
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace WiiDeviceLibrary
+{
+    public class FullIRBeacon: ExtendedIRBeacon
+    {
+        private int _XMin;
+        public int XMin
+        {
+            get { return _XMin; }
+            set { _XMin = value; }
+        }
+
+        private int _XMax;
+        public int XMax
+        {
+            get { return _XMax; }
+            set { _XMax = value; }
+        }	
+	
+        private int _YMin;
+        public int YMin
+        {
+            get { return _YMin; }
+            set { _YMin = value; }
+        }
+
+        private int _YMax;
+        public int YMax
+        {
+            get { return _YMax; }
+            set { _YMax = value; }
+        }
+
+        private int _Intensity;
+        public int Intensity
+        {
+            get { return _Intensity; }
+            set { _Intensity = value; }
+        }
+    }
+}

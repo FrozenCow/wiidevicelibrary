@@ -1,0 +1,6 @@
+<objects>
+  <object type="LinuxGUITest.ClassicControllerInformation" palette-category="LinuxGUITest" allow-children="false" base-type="Gtk.Bin">
+    <itemgroups />
+    <signals />
+  </object>
+</objects>
