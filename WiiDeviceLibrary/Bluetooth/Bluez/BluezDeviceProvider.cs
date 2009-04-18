@@ -282,9 +282,14 @@ namespace WiiDeviceLibrary.Bluetooth.Bluez
 			else
 				throw new ArgumentException("The specified deviceInfo with name '" + info.Name + "' is not supported.", "deviceInfo");
 
-			Thread.Sleep(1000);
-			
-            device.Initialize();
+			try
+			{
+            	device.Initialize();
+			}
+			catch(Exception e)
+			{
+				throw new DeviceConnectException("Failed to connect to device", e);
+			}	
 
 			_FoundDevices.Remove(info.BluetoothAddress);
 			_LostDevices.Add(info.BluetoothAddress, info);			

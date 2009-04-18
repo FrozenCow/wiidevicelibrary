@@ -63,11 +63,6 @@ namespace WiiDeviceLibrary.Bluetooth.Bluez
 		public BluezStream(BluetoothAddress address) : this(address.ToString())
 		{
 		}
-		
-        //internal BluezStream(NativeMethods.bdaddr_t address)
-        //{
-        //    Connect(address);
-        //}
         #endregion
 
         private void Connect(NativeMethods.bdaddr_t bdaddress)
@@ -89,12 +84,10 @@ namespace WiiDeviceLibrary.Bluetooth.Bluez
 				int error = Marshal.GetLastWin32Error();
 				if(_ControlSocket == -1)
 				{
-					if(error == 4)
+					if(error != 4)
 					{
-						Console.WriteLine("Retrying control");
-						continue;
+						throw new WiiDeviceLibrary.DeviceConnectException("Failed to allocate the control socket.");
 					}
-					throw new WiiDeviceLibrary.DeviceConnectException("Failed to allocate the control socket.");
 				}
 			}
                 
@@ -105,13 +98,11 @@ namespace WiiDeviceLibrary.Bluetooth.Bluez
 				int error = Marshal.GetLastWin32Error();
 				if(_InterruptSocket == -1)
 				{
-					if(error == 4)
+					if(error != 4)
 					{
-						Console.WriteLine("Retrying interrupt");
-						continue;
+						NativeMethods.close(_ControlSocket);
+						throw new WiiDeviceLibrary.DeviceConnectException("Failed to allocate the interrupt socket.");
 					}
-					NativeMethods.close(_ControlSocket);
-					throw new WiiDeviceLibrary.DeviceConnectException("Failed to allocate the interrupt socket.");
 				}
 			}
 
@@ -128,7 +119,7 @@ namespace WiiDeviceLibrary.Bluetooth.Bluez
             // connect the control socket
 			address.bdaddr = bdaddress;
 			address.l2_psm = 0x11;
-            if (NativeMethods.connect(_ControlSocket, ref address, (uint)Marshal.SizeOf(address)) == -1)
+            while (NativeMethods.connect(_ControlSocket, ref address, (uint)Marshal.SizeOf(address)) == -1)
             {
 				int error = Marshal.GetLastWin32Error();
 				if(error != 4)
@@ -141,12 +132,16 @@ namespace WiiDeviceLibrary.Bluetooth.Bluez
 
             // connect the interrupt socket
 			address.bdaddr = bdaddress;
-			address.l2_psm = 0x13;		
-            if (NativeMethods.connect(_InterruptSocket, ref address, (uint)Marshal.SizeOf(address)) == -1)
+			address.l2_psm = 0x13;
+            while (NativeMethods.connect(_InterruptSocket, ref address, (uint)Marshal.SizeOf(address)) == -1)
             {
-                NativeMethods.close(_ControlSocket);
-                NativeMethods.close(_InterruptSocket);
-                throw new WiiDeviceLibrary.DeviceConnectException("Failed to connect the interrupt socket.");
+				int error = Marshal.GetLastWin32Error();
+				if(error != 4)
+				{
+                	NativeMethods.close(_ControlSocket);
+                	NativeMethods.close(_InterruptSocket);
+                	throw new WiiDeviceLibrary.DeviceConnectException("Failed to connect the interrupt socket.");
+				}
             }
 			_Connected = true;
         }
@@ -159,7 +154,7 @@ namespace WiiDeviceLibrary.Bluetooth.Bluez
 				// with bluez you get a hid byte, this must not be copied into the buffer
 				count = Math.Min(count, receivedByteCount - 1);
 	            Array.Copy(_ReceiveBuffer, 1, buffer, offset, count);
-	            return count;					
+	            return count;
 			}
 			else if (receivedByteCount <= 0)
 			{
@@ -202,13 +197,16 @@ namespace WiiDeviceLibrary.Bluetooth.Bluez
 				throw new IOException("The control socket is not connected");
             _SendBuffer[0] = 0x52;
             Array.Copy(buffer, offset, _SendBuffer, 1, count);
-            int returnValue = NativeMethods.send(_ControlSocket, _SendBuffer, count + 1, 0);
-			if(returnValue == -1)
+			while(NativeMethods.send(_ControlSocket, _SendBuffer, count + 1, 0) == -1)
 			{
-				NativeMethods.close(_InterruptSocket);
-				NativeMethods.close(_ControlSocket);		
-				_Connected = false;				
-				throw new IOException("Failed to write to the control socket.");
+				int error = Marshal.GetLastWin32Error();
+				if(error != 4)
+				{
+					NativeMethods.close(_InterruptSocket);
+					NativeMethods.close(_ControlSocket);
+					_Connected = false;
+					throw new IOException("Failed to write to the control socket.");
+				}
 			}
         }
 

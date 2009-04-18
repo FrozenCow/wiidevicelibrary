@@ -135,11 +135,6 @@ namespace LinuxGUITest
             entryY.Text = _Wiimote.Accelerometer.Calibrated.Y.ToString();
             entryZ.Text = _Wiimote.Accelerometer.Calibrated.Z.ToString();
 			
-			//if(_Wiimote.ReportingMode.ToString() != comboboxReportingMode.ActiveText)
-			//	comboboxReportingMode.
-			//	comboboxReportingMode.ActiveText = _Wiimote.ReportingMode.ToString();
-			// update battery level
-			//Console.WriteLine(_Wiimote.BatteryLevel);
 			progressbarBattery.Fraction = (double)(_Wiimote.BatteryLevel) / 0xC8;
 			
 			drawingareaIR.QueueDraw();

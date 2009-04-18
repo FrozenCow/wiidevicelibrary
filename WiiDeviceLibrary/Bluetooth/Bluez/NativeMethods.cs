@@ -159,9 +159,6 @@ namespace WiiDeviceLibrary.Bluetooth.Bluez
 		
 		[DllImport("libbluetooth.so.3")]
 		public static extern int str2ba(string str, out bdaddr_t ba);
-		
-        //[DllImport("libbluetooth.so.3")]
-        //public static extern int ba2str(ref bdaddr_t ba, [Out] StringBuilder str);
 
         [DllImport("libc", SetLastError = true)]
 		public static extern int socket(int socket_family, int socket_type, int protocol);
