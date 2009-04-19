@@ -18,10 +18,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using WiiDeviceLibrary.Bluetooth.MsHid;
 
 namespace WiiDeviceLibrary.Bluetooth.Bluesoleil
 {
-    public class BluesoleilDeviceInfo : IBluetoothDeviceInfo
+    public class BluesoleilDeviceInfo : MsHidDeviceInfo, IBluetoothDeviceInfo
     {
         #region Properties
         private BluetoothDevice _Device;
@@ -48,6 +49,25 @@ namespace WiiDeviceLibrary.Bluetooth.Bluesoleil
             _Device = device;
             _Service = service;
             _BluetoothAddress = new BluetoothAddress(device.Address);
+        }
+        #endregion
+        #region Methods
+        public override bool Equals(MsHidDeviceInfo other)
+        {
+            BluesoleilDeviceInfo bsdiOther = other as BluesoleilDeviceInfo;
+            if (bsdiOther == null)
+                return false;
+            return Equals(bsdiOther);
+        }
+
+        public bool Equals(BluesoleilDeviceInfo other)
+        {
+            return this.BluetoothAddress == other.BluetoothAddress;
+        }
+
+        public override int GetHashCode()
+        {
+            return BluetoothAddress.GetHashCode();
         }
         #endregion
     }

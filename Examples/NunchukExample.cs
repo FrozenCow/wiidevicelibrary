@@ -108,6 +108,7 @@ namespace Examples
             // In this example we will only cover the Nunchuk, but we can also check for other available extensions.
             if (extension is NunchukExtension)
             {
+                wiimote.SetReportingMode(ReportingMode.ButtonsAccelerometer16Extension);
                 Console.WriteLine("A nunchuk attached to the Wiimote.");
             }
             // A few 'dummy-extensions' are available to detect various undefined situations.

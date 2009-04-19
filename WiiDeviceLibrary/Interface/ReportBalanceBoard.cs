@@ -42,7 +42,7 @@ namespace WiiDeviceLibrary
         }
         #endregion
 
-        public void Initialize()
+        public override void Initialize()
         {
             ReadCalibrationData();
             SetReportingMode(ReportingMode.Buttons8Extension);

@@ -22,6 +22,7 @@ using System.Threading;
 using WiiDeviceLibrary.Bluetooth.MsHid;
 using Microsoft.Win32.SafeHandles;
 using System.Diagnostics;
+using System.IO;
 
 namespace WiiDeviceLibrary.Bluetooth.Bluesoleil
 {
@@ -60,6 +61,7 @@ namespace WiiDeviceLibrary.Bluetooth.Bluesoleil
             if (discoveringThread != null)
                 throw new InvalidOperationException("The " + GetType().Name + " is already discovering.");
             discoveringThread = new Thread(Discovering);
+            discoveringThread.Name = "Discovering Thread";
             discoveringThread.Start();
         }
 
@@ -175,9 +177,19 @@ namespace WiiDeviceLibrary.Bluetooth.Bluesoleil
         {
             BluesoleilDeviceInfo bsDeviceInfo = (BluesoleilDeviceInfo)deviceInfo;
             BluetoothConnection connection = BluesoleilService.Instance.ConnectService(bsDeviceInfo.Service);
-            ReportWiimote wiimote = null;
 
-            if (!MsHidWiiProviderHelper.TryConnectWiimote(deviceInfo, delegate(SafeFileHandle fileHandle) { return new MsHidStream(fileHandle); }, out wiimote))
+            ReportWiimote wiimote = null;
+            foreach (KeyValuePair<string, SafeFileHandle> pair in MsHidDeviceProviderHelper.GetWiiDeviceHandles())
+            {
+                string devicePath = pair.Key;
+                SafeFileHandle fileHandle = pair.Value;
+                Stream communicationStream = new MsHidStream(fileHandle);
+                wiimote = new ReportWiimote(deviceInfo, communicationStream);
+                if (MsHidDeviceProviderHelper.TryConnect(wiimote, communicationStream, devicePath, fileHandle))
+                    break;
+                wiimote = null;
+            }
+            if (wiimote == null)
             {
                 bluesoleil.DisconnectService(connection);
                 throw new DeviceConnectException("The connected bluetooth device was not found in the HID-list.");
@@ -205,6 +217,8 @@ namespace WiiDeviceLibrary.Bluetooth.Bluesoleil
                 catch (BluesoleilException)
                 {
                 }
+
+                MsHidDeviceProviderHelper.SetDevicePathConnected(deviceInfo.DevicePath, false);
             }
         }
 

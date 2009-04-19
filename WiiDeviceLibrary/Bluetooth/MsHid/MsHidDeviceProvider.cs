@@ -77,7 +77,7 @@ namespace WiiDeviceLibrary.Bluetooth.MsHid
             {
                 if (!_FoundDevices.ContainsKey(devicePath))
                 {
-                    MsHidWiimoteInfo deviceInfo = new MsHidWiimoteInfo(devicePath);
+                    MsHidDeviceInfo deviceInfo = new MsHidDeviceInfo(devicePath);
                     _FoundDevices.Add(devicePath, deviceInfo);
                     OnWiimoteFound(new DeviceInfoEventArgs(deviceInfo));
                 }
@@ -102,7 +102,7 @@ namespace WiiDeviceLibrary.Bluetooth.MsHid
 
         public IDevice Connect(IDeviceInfo deviceInfo)
         {
-            MsHidWiimoteInfo hidWiimoteInfo = deviceInfo as MsHidWiimoteInfo;
+            MsHidDeviceInfo hidWiimoteInfo = deviceInfo as MsHidDeviceInfo;
             if (hidWiimoteInfo == null)
                 throw new ArgumentException("The specified WiimoteInfo does not belong to this WiimoteProvider.", "deviceInfo");
             string devicePath = hidWiimoteInfo.DevicePath;

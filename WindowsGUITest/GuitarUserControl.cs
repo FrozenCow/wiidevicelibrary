@@ -26,7 +26,7 @@ using WiiDeviceLibrary.Extensions;
 
 namespace WindowsGUITest
 {
-    public partial class GuitarUserControl : UserControl
+    public partial class GuitarUserControl : UserControl, IExtensionControl
     {
         private GuitarExtension _Guitar;
         public GuitarExtension Guitar
@@ -38,11 +38,9 @@ namespace WindowsGUITest
         public GuitarUserControl()
         {
             InitializeComponent();
-
-            Application.Idle += Application_Idle;
         }
 
-        void Application_Idle(object sender, EventArgs e)
+        public void UpdateUI()
         {
             if (Guitar != null)
             {

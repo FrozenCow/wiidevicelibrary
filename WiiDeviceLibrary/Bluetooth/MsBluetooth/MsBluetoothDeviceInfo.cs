@@ -18,10 +18,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using WiiDeviceLibrary.Bluetooth.MsHid;
 
 namespace WiiDeviceLibrary.Bluetooth.MsBluetooth
 {
-    public class MsBluetoothWiimoteInfo: IBluetoothDeviceInfo
+    public class MsBluetoothDeviceInfo: MsHidDeviceInfo, IBluetoothDeviceInfo
     {
         #region Properties
         private BluetoothAddress _BluetoothAddress;
@@ -38,10 +39,29 @@ namespace WiiDeviceLibrary.Bluetooth.MsBluetooth
         }
         #endregion
         #region Constructors
-        internal MsBluetoothWiimoteInfo(BluetoothAddress bluetoothAddress, NativeMethods.BluetoothDeviceInfo device)
+        internal MsBluetoothDeviceInfo(BluetoothAddress bluetoothAddress, NativeMethods.BluetoothDeviceInfo device)
         {
             _BluetoothAddress = bluetoothAddress;
             _Device = device;
+        }
+        #endregion
+        #region Methods
+        public override bool Equals(MsHidDeviceInfo other)
+        {
+            MsBluetoothDeviceInfo msbtOther = other as MsBluetoothDeviceInfo;
+            if (msbtOther == null)
+                return false;
+            return Equals(msbtOther);
+        }
+
+        public bool Equals(MsBluetoothDeviceInfo other)
+        {
+            return this.BluetoothAddress == other.BluetoothAddress;
+        }
+
+        public override int GetHashCode()
+        {
+            return BluetoothAddress.GetHashCode();
         }
         #endregion
     }

@@ -54,6 +54,7 @@
     <Compile Include="GuitarUserControl.Designer.cs">
       <DependentUpon>GuitarUserControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="IExtensionControl.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

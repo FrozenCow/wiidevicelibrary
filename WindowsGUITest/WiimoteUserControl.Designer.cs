@@ -64,7 +64,6 @@ namespace WindowsGUITest
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.sizeLabel = new System.Windows.Forms.Label();
             this.extensionBox = new System.Windows.Forms.GroupBox();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.wiimoteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -236,30 +235,26 @@ namespace WindowsGUITest
             // irBox
             // 
             this.irBox.BackColor = System.Drawing.Color.Black;
-            this.irBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.irBox.Location = new System.Drawing.Point(3, 63);
             this.irBox.Name = "irBox";
             this.irBox.Size = new System.Drawing.Size(400, 115);
             this.irBox.TabIndex = 12;
             this.irBox.TabStop = false;
             this.irBox.Paint += new System.Windows.Forms.PaintEventHandler(this.irBox_Paint);
-            this.irBox.SizeChanged += new System.EventHandler(this.irBox_SizeChanged);
             // 
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.Controls.Add(this.panel1);
             this.flowLayoutPanel1.Controls.Add(this.irBox);
             this.flowLayoutPanel1.Controls.Add(this.panel2);
-            this.flowLayoutPanel1.Controls.Add(this.sizeLabel);
             this.flowLayoutPanel1.Controls.Add(this.extensionBox);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 24);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(475, 373);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(473, 371);
             this.flowLayoutPanel1.TabIndex = 13;
             this.flowLayoutPanel1.WrapContents = false;
-            this.flowLayoutPanel1.SizeChanged += new System.EventHandler(this.flowLayoutPanel1_SizeChanged);
             // 
             // panel1
             // 
@@ -267,7 +262,6 @@ namespace WindowsGUITest
             this.panel1.Controls.Add(this.reportingmodeBox);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.buttonsBox);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(400, 54);
@@ -283,25 +277,14 @@ namespace WindowsGUITest
             this.panel2.Controls.Add(this.led3Check);
             this.panel2.Controls.Add(this.rumbleCheck);
             this.panel2.Controls.Add(this.led4Check);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(3, 184);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(400, 111);
             this.panel2.TabIndex = 14;
             // 
-            // sizeLabel
-            // 
-            this.sizeLabel.Location = new System.Drawing.Point(3, 298);
-            this.sizeLabel.Name = "sizeLabel";
-            this.sizeLabel.Size = new System.Drawing.Size(400, 1);
-            this.sizeLabel.TabIndex = 15;
-            // 
             // extensionBox
             // 
-            this.extensionBox.AutoSize = true;
-            this.extensionBox.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.extensionBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.extensionBox.Location = new System.Drawing.Point(3, 302);
+            this.extensionBox.Location = new System.Drawing.Point(3, 301);
             this.extensionBox.Name = "extensionBox";
             this.extensionBox.Size = new System.Drawing.Size(400, 5);
             this.extensionBox.TabIndex = 16;
@@ -314,7 +297,7 @@ namespace WindowsGUITest
             this.wiimoteToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(475, 24);
+            this.menuStrip.Size = new System.Drawing.Size(473, 24);
             this.menuStrip.TabIndex = 14;
             this.menuStrip.Text = "menuStrip1";
             // 
@@ -353,15 +336,15 @@ namespace WindowsGUITest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.menuStrip);
             this.Name = "WiimoteUserControl";
-            this.Size = new System.Drawing.Size(475, 397);
+            this.Size = new System.Drawing.Size(473, 395);
             this.accelerometersGroupBox.ResumeLayout(false);
             this.accelerometersGroupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.irBox)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
-            this.flowLayoutPanel1.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
@@ -394,7 +377,6 @@ namespace WindowsGUITest
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Label sizeLabel;
         private System.Windows.Forms.GroupBox extensionBox;
         private System.Windows.Forms.MenuStrip menuStrip;
         private System.Windows.Forms.ToolStripMenuItem wiimoteToolStripMenuItem;

@@ -26,7 +26,7 @@ using WiiDeviceLibrary.Extensions;
 
 namespace WindowsGUITest
 {
-    public partial class ClassicControllerUserControl : UserControl
+    public partial class ClassicControllerUserControl : UserControl, IExtensionControl
     {
         private ClassicControllerExtension _ClassicController;
         public ClassicControllerExtension ClassicController
@@ -38,11 +38,9 @@ namespace WindowsGUITest
         public ClassicControllerUserControl()
         {
             InitializeComponent();
-
-            Application.Idle += Application_Idle;
         }
 
-        void Application_Idle(object sender, EventArgs e)
+        public void UpdateUI()
         {
             if (ClassicController != null)
             {

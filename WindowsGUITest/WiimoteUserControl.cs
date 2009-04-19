@@ -47,6 +47,13 @@ namespace WindowsGUITest
             }
         }
 
+        private IExtensionControl _ExtensionControl;
+        public IExtensionControl ExtensionControl
+        {
+            get { return _ExtensionControl; }
+            protected set { _ExtensionControl = value; }
+        }
+
         private void DeinitializeWiimote()
         {
             Wiimote.ExtensionAttached -= Wiimote_ExtensionAttached;
@@ -55,6 +62,8 @@ namespace WindowsGUITest
 
         private void InitializeWiimote()
         {
+            if (!IsHandleCreated)
+                CreateControl();
             reportingmodeBox.SelectedItem = Wiimote.ReportingMode;
             led1Check.Checked = (Wiimote.Leds & WiimoteLeds.Led1) == WiimoteLeds.Led1;
             led2Check.Checked = (Wiimote.Leds & WiimoteLeds.Led2) == WiimoteLeds.Led2;
@@ -62,55 +71,80 @@ namespace WindowsGUITest
             led4Check.Checked = (Wiimote.Leds & WiimoteLeds.Led4) == WiimoteLeds.Led4;
             rumbleCheck.Checked = Wiimote.IsRumbling;
 
+            if (Wiimote.Extension != null)
+                Wiimote_ExtensionAttached(Wiimote, new WiimoteExtensionEventArgs(Wiimote.Extension));
+
+            Wiimote.Updated += Wiimote_Updated;
             Wiimote.ExtensionAttached += Wiimote_ExtensionAttached;
             Wiimote.ExtensionDetached += Wiimote_ExtensionDetached;
         }
 
+        void Wiimote_Updated(object sender, EventArgs e)
+        {
+            if (Wiimote != null)
+            {
+                irBox.Invalidate();
+            }
+        }
+
         void Wiimote_ExtensionAttached(object sender, WiimoteExtensionEventArgs e)
         {
-            IWiimoteExtension extension = Wiimote.Extension;
-            Control extensionControl = null;
-            if (extension is NunchukExtension)
+            IWiimoteExtension wiimoteExtension = Wiimote.Extension;
+            Invoke(new Action<IWiimoteExtension>(delegate(IWiimoteExtension extension)
             {
-                NunchukUserControl nunchukUC = new NunchukUserControl();
-                nunchukUC.Nunchuk = (NunchukExtension)extension;
-                extensionControl = nunchukUC;
-            }
-            else if (extension is ClassicControllerExtension)
-            {
-                ClassicControllerUserControl classicControllerUC = new ClassicControllerUserControl();
-                classicControllerUC.ClassicController = (ClassicControllerExtension)extension;
-                extensionControl = classicControllerUC;
-            }
-            else if (extension is GuitarExtension)
-            {
-                GuitarUserControl guitarUC = new GuitarUserControl();
-                guitarUC.Guitar = (GuitarExtension)extension;
-                extensionControl = guitarUC;
-            }
+                Control extensionControl = null;
+                if (extension is NunchukExtension)
+                {
+                    NunchukUserControl nunchukUC = new NunchukUserControl();
+                    nunchukUC.Nunchuk = (NunchukExtension)extension;
+                    extensionControl = nunchukUC;
+                } 
+                else if (extension is ClassicControllerExtension)
+                {
+                    ClassicControllerUserControl classicControllerUC = new ClassicControllerUserControl();
+                    classicControllerUC.ClassicController = (ClassicControllerExtension)extension;
+                    extensionControl = classicControllerUC;
+                }
+                else if (extension is GuitarExtension)
+                {
+                    GuitarUserControl guitarUC = new GuitarUserControl();
+                    guitarUC.Guitar = (GuitarExtension)extension;
+                    extensionControl = guitarUC;
+                }
 
-            if (extensionControl != null)
-            {
-                extensionControl.Dock = DockStyle.Fill;
-                extensionBox.Controls.Add(extensionBox);
-            }
+                ExtensionControl = (IExtensionControl)extensionControl;
+                if (extensionControl != null)
+                {
+                    extensionBox.Height = extensionControl.Height + 50;
+                    extensionBox.Text = extension.GetType().Name; 
+                    extensionBox.Controls.Add(extensionControl);
+                    extensionControl.Dock = DockStyle.Fill;
+                    this.Height = extensionBox.Top + extensionBox.Height;
+                }
+                reportingmodeBox.SelectedItem = Wiimote.ReportingMode;
+            }), wiimoteExtension);
         }
 
         void Wiimote_ExtensionDetached(object sender, WiimoteExtensionEventArgs e)
         {
-            while (extensionBox.Controls.Count > 0)
+            Invoke(new System.Threading.ThreadStart(delegate()
             {
-                Control c = extensionBox.Controls[0];
-                extensionBox.Controls.RemoveAt(0);
-                c.Dispose();
-            }
+                while (extensionBox.Controls.Count > 0)
+                {
+                    Control c = extensionBox.Controls[0];
+                    extensionBox.Controls.RemoveAt(0);
+                    c.Dispose();
+                }
+                extensionBox.Text = "Extension";
+                extensionBox.Height = 50;
+                this.Height = extensionBox.Top + extensionBox.Height;
+                reportingmodeBox.SelectedItem = Wiimote.ReportingMode;
+            }));
         }
 
         public WiimoteUserControl()
         {
             InitializeComponent();
-
-            sizeLabel.Width = flowLayoutPanel1.ClientSize.Width - (flowLayoutPanel1.Padding.Left + flowLayoutPanel1.Padding.Right);
 
             Array reportingModeArray = Enum.GetValues(typeof(ReportingMode));
             object[] reportingModeValues = new object[reportingModeArray.Length];
@@ -119,22 +153,6 @@ namespace WindowsGUITest
                 reportingModeValues[i] = reportingModeArray.GetValue(i);
             }
             reportingmodeBox.Items.AddRange(reportingModeValues);
-
-            Application.Idle += new EventHandler(Application_Idle);
-        }
-
-        void Application_Idle(object sender, EventArgs e)
-        {
-            if (Wiimote != null)
-            {
-                buttonsBox.Text = Wiimote.Buttons.ToString();
-                accelerometerXBox.Text = Wiimote.Accelerometer.Calibrated.X.ToString();
-                accelerometerYBox.Text = Wiimote.Accelerometer.Calibrated.Y.ToString();
-                accelerometerZBox.Text = Wiimote.Accelerometer.Calibrated.Z.ToString();
-                batteryBar.Value = Wiimote.BatteryLevel;
-
-                irBox.Invalidate();
-            }
         }
 
         private void reportingmodeBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -161,8 +179,21 @@ namespace WindowsGUITest
             Wiimote.UpdateStatus();
         }
 
+        public void UpdateUI()
+        {
+            if (ExtensionControl != null)
+                ExtensionControl.UpdateUI();
+            buttonsBox.Text = Wiimote.Buttons.ToString();
+            accelerometerXBox.Text = Wiimote.Accelerometer.Calibrated.X.ToString();
+            accelerometerYBox.Text = Wiimote.Accelerometer.Calibrated.Y.ToString();
+            accelerometerZBox.Text = Wiimote.Accelerometer.Calibrated.Z.ToString();
+            batteryBar.Value = Wiimote.BatteryLevel;
+        }
+
         private void irBox_Paint(object sender, PaintEventArgs e)
         {
+            UpdateUI();
+
             Graphics g = e.Graphics;
             int width = irBox.Width;
             int height = irBox.Height;
@@ -174,16 +205,6 @@ namespace WindowsGUITest
                 Pen p = new Pen(Brushes.White);
                 g.DrawRectangle(p, width - (int)(scaleFactor * irBeacon.X - 2), (int)(scaleFactor * irBeacon.Y - 2), 4, 4);
             }
-        }
-
-        private void irBox_SizeChanged(object sender, EventArgs e)
-        {
-            irBox.Height = (int)(irBox.Width * (3f / 4f));
-        }
-
-        private void flowLayoutPanel1_SizeChanged(object sender, EventArgs e)
-        {
-            sizeLabel.Width = flowLayoutPanel1.ClientSize.Width - (flowLayoutPanel1.Padding.Left + flowLayoutPanel1.Padding.Right);
         }
 
         private void calibrateToolStripMenuItem_Click(object sender, EventArgs e)

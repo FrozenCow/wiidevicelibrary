@@ -21,28 +21,38 @@ using System.Text;
 
 namespace WiiDeviceLibrary.Bluetooth.MsHid
 {
-    public class MsHidWiimoteInfo: IDeviceInfo, IEquatable<MsHidWiimoteInfo>
+    public class MsHidDeviceInfo: IDeviceInfo, IEquatable<MsHidDeviceInfo>
     {
         private string _DevicePath;
         public string DevicePath
         {
             get { return _DevicePath; }
+            set
+            {
+                if (_DevicePath != null)
+                    throw new InvalidOperationException("The devicepath was already set.");
+                _DevicePath = value;
+            }
         }
 
-        public MsHidWiimoteInfo(string devicePath)
+        public MsHidDeviceInfo()
+        {
+        }
+
+        public MsHidDeviceInfo(string devicePath)
         {
             _DevicePath = devicePath;
         }
 
         public override bool Equals(object obj)
         {
-            MsHidWiimoteInfo other = obj as MsHidWiimoteInfo;
+            MsHidDeviceInfo other = obj as MsHidDeviceInfo;
             if (other != null)
                 return Equals(other);
             return base.Equals(obj);
         }
 
-        public bool Equals(MsHidWiimoteInfo other)
+        public virtual bool Equals(MsHidDeviceInfo other)
         {
             return this.DevicePath == other.DevicePath;
         }

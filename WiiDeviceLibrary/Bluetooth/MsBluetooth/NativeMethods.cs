@@ -217,8 +217,9 @@ namespace WiiDeviceLibrary.Bluetooth.MsBluetooth
         {
             BluetoothRadioInfo radioInfo = default(BluetoothRadioInfo);
             int result = BluetoothGetRadioInfo(radioHandle, ref radioInfo);
-            if (result != 0)
-                throw new InvalidOperationException();
+            HandleResult(result);
+            //if (result != 0)
+            //    throw new InvalidOperationException();
             return radioInfo;
         }
 

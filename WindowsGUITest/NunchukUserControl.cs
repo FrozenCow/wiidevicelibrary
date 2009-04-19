@@ -26,7 +26,7 @@ using WiiDeviceLibrary.Extensions;
 
 namespace WindowsGUITest
 {
-    public partial class NunchukUserControl : UserControl
+    public partial class NunchukUserControl : UserControl, IExtensionControl
     {
         private NunchukExtension _Nunchuk;
         public NunchukExtension Nunchuk
@@ -38,11 +38,9 @@ namespace WindowsGUITest
         public NunchukUserControl()
         {
             InitializeComponent();
-
-            Application.Idle += new EventHandler(Application_Idle);
         }
 
-        void Application_Idle(object sender, EventArgs e)
+        public void UpdateUI()
         {
             if (Nunchuk != null)
             {

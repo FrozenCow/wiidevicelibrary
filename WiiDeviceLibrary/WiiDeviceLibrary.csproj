@@ -95,12 +95,13 @@
     <Compile Include="Bluetooth\MsHid\MsHidHelper.cs" />
     <Compile Include="Bluetooth\MsBluetooth\NativeMethods.cs" />
     <Compile Include="Bluetooth\MsBluetooth\MsBluetoothDeviceProvider.cs" />
-    <Compile Include="Bluetooth\MsBluetooth\MsBluetoothWiimoteInfo.cs" />
+    <Compile Include="Bluetooth\MsBluetooth\MsBluetoothDeviceInfo.cs" />
     <Compile Include="Bluetooth\Bluez\NativeMethods.cs" />
     <Compile Include="Bluetooth\Bluez\BluezStream.cs" />
     <Compile Include="Bluetooth\Bluez\BluezDeviceProvider.cs" />
     <Compile Include="Bluetooth\MsHid\MsHidDeviceProviderFactory.cs" />
-    <Compile Include="Bluetooth\MsHid\MsHidWiimoteProviderHelper.cs" />
+    <Compile Include="Bluetooth\MsHid\MsHidDeviceProviderHelper.cs" />
+    <Compile Include="Bluetooth\MsHid\UnsureMsHidStream.cs" />
     <Compile Include="Extensions\ClassicControllerButtons.cs" />
     <Compile Include="Extensions\ClassicControllerExtension.cs" />
     <Compile Include="Extensions\ClassicControllerExtensionFactory.cs" />
@@ -110,7 +111,7 @@
     <Compile Include="Extensions\NunchukButtons.cs" />
     <Compile Include="Bluetooth\MsHid\NativeMethods.cs" />
     <Compile Include="Bluetooth\MsHid\MsHidStream.cs" />
-    <Compile Include="Bluetooth\MsHid\MsHidWiimoteInfo.cs" />
+    <Compile Include="Bluetooth\MsHid\MsHidDeviceInfo.cs" />
     <Compile Include="Bluetooth\MsHid\MsHidDeviceProvider.cs" />
     <Compile Include="Interface\Accelerometer.cs" />
     <Compile Include="Interface\AccelerometerAxes.cs" />
