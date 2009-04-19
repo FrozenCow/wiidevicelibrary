@@ -150,9 +150,11 @@ namespace WiiDeviceLibrary.Bluetooth.Bluez
             {
                 case NativeMethods.HciEvent.EVT_INQUIRY_RESULT:
 				    ParseInquiryResult(buffer, 2);
+					InitiateInquiry();
 				    break;
                 case NativeMethods.HciEvent.EVT_INQUIRY_RESULT_WITH_RSSI:
 				    ParseInquiryResult(buffer, 4);
+					InitiateInquiry();
 				    break;
                 case NativeMethods.HciEvent.EVT_REMOTE_NAME_REQ_COMPLETE:
 				    ParseRemoteNameReqComplete(buffer, 3, count - 3);

@@ -23,6 +23,7 @@ namespace WiiDeviceLibrary.Bluetooth.Bluez
 {	
 	internal static class NativeMethods
 	{		
+		public const int EINTR = 4;
 		public const int AF_BLUETOOTH = 31;
 		public const int SOCK_SEQPACKET = 5;
 		public const int BTPROTO_L2CAP = 0;

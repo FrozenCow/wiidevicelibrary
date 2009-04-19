@@ -84,7 +84,7 @@ namespace WiiDeviceLibrary.Bluetooth.Bluez
 				int error = Marshal.GetLastWin32Error();
 				if(_ControlSocket == -1)
 				{
-					if(error != 4)
+					if(error != NativeMethods.EINTR)
 					{
 						throw new WiiDeviceLibrary.DeviceConnectException("Failed to allocate the control socket.");
 					}
@@ -98,7 +98,7 @@ namespace WiiDeviceLibrary.Bluetooth.Bluez
 				int error = Marshal.GetLastWin32Error();
 				if(_InterruptSocket == -1)
 				{
-					if(error != 4)
+					if(error != NativeMethods.EINTR)
 					{
 						NativeMethods.close(_ControlSocket);
 						throw new WiiDeviceLibrary.DeviceConnectException("Failed to allocate the interrupt socket.");
@@ -122,7 +122,7 @@ namespace WiiDeviceLibrary.Bluetooth.Bluez
             while (NativeMethods.connect(_ControlSocket, ref address, (uint)Marshal.SizeOf(address)) == -1)
             {
 				int error = Marshal.GetLastWin32Error();
-				if(error != 4)
+				if(error != NativeMethods.EINTR)
 				{
 	                NativeMethods.close(_ControlSocket);
 	                NativeMethods.close(_InterruptSocket);
@@ -136,7 +136,7 @@ namespace WiiDeviceLibrary.Bluetooth.Bluez
             while (NativeMethods.connect(_InterruptSocket, ref address, (uint)Marshal.SizeOf(address)) == -1)
             {
 				int error = Marshal.GetLastWin32Error();
-				if(error != 4)
+				if(error != NativeMethods.EINTR)
 				{
                 	NativeMethods.close(_ControlSocket);
                 	NativeMethods.close(_InterruptSocket);
@@ -200,7 +200,7 @@ namespace WiiDeviceLibrary.Bluetooth.Bluez
 			while(NativeMethods.send(_ControlSocket, _SendBuffer, count + 1, 0) == -1)
 			{
 				int error = Marshal.GetLastWin32Error();
-				if(error != 4)
+				if(error != NativeMethods.EINTR)
 				{
 					NativeMethods.close(_InterruptSocket);
 					NativeMethods.close(_ControlSocket);
