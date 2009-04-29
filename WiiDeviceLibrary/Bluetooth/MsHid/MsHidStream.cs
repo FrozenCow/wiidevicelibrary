@@ -38,6 +38,7 @@ namespace WiiDeviceLibrary.Bluetooth.MsHid
         }
 
         private byte[] writeBuffer = new byte[22];
+        private object writingLocker = new object();
 
         public MsHidStream(string devicePath)
             : this(CreateFileHandle(devicePath))
@@ -67,24 +68,23 @@ namespace WiiDeviceLibrary.Bluetooth.MsHid
 
         public override int Read(byte[] buffer, int offset, int count)
         {
+            int result = 0;
             try
             {
-                return _BaseStream.Read(buffer, offset, count);
+                result = _BaseStream.Read(buffer, offset, count);
             }
-            catch (IOException)
-            {
-                return 0;
-            }
-            catch (ObjectDisposedException)
-            {
-                return 0;
-            }
+            catch (IOException) { }
+            catch (ObjectDisposedException) { }
+            return result;
         }
 
         public override void Write(byte[] buffer, int offset, int count)
         {
-            Array.Copy(buffer, offset, writeBuffer, 0, count);
-            WriteHidReport();
+            lock (writingLocker)
+            {
+                Array.Copy(buffer, offset, writeBuffer, 0, count);
+                WriteHidReport();
+            }
         }
 
         private void WriteHidReport()
@@ -97,11 +97,10 @@ namespace WiiDeviceLibrary.Bluetooth.MsHid
             _BaseStream.Write(writeBuffer, 0, 22);
         }
 
-        protected override void Dispose(bool disposing)
+        public override void Close()
         {
-            if (disposing)
-                BaseStream.Close();
-            base.Dispose(disposing);
+            _BaseStream.Close();
+            base.Close();
         }
 
         #region Not supported methods

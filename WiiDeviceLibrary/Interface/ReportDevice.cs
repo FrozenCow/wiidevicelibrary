@@ -43,6 +43,11 @@ namespace WiiDeviceLibrary
         {
             get { return outputBuffer; }
         }
+
+        protected bool IsConnected
+        {
+            get { return isConnected; }
+        }
         #endregion
 
         #region Constructors
@@ -200,7 +205,8 @@ namespace WiiDeviceLibrary
                     break;
                 case 0x05:
                     // Occurs when WriteMemory in InitializeWiimote is called. The reason for the error is unknown.
-                    break;
+                    // Seems to happen only with Bluesoleil.
+                    throw new InvalidOperationException("WriteMemory could not be executed.");
                 case 0x07:
                     // Ignore this exception for now.
                     // throw new ArgumentException("The specified address is not accesible.");
@@ -263,7 +269,8 @@ namespace WiiDeviceLibrary
             }
 
             OnReportReceived(buffer);
-            BeginReadReport();
+            if (IsConnected)
+                BeginReadReport();
         }
 
         protected abstract bool ParseReport(byte[] report);
@@ -357,9 +364,13 @@ namespace WiiDeviceLibrary
         private byte[] ReadReport()
         {
             byte[] report = new byte[maximalReportLength];
-            communicationStream.Read(report, 0, report.Length);
-            OnReportReceived(report);
-            return report;
+            int result = communicationStream.Read(report, 0, report.Length);
+            if (result > 0)
+            {
+                OnReportReceived(report);
+                return report;
+            }
+            return null;
         }
         protected byte[] SendAndReturnReport(InputReport returnReportType)
         {

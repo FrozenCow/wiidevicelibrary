@@ -157,7 +157,9 @@ namespace WindowsGUITest
 
         private void reportingmodeBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Wiimote.SetReportingMode((ReportingMode)reportingmodeBox.SelectedItem);
+            ReportingMode selectedReportingMode = (ReportingMode)reportingmodeBox.SelectedItem;
+            if (Wiimote.ReportingMode != selectedReportingMode)
+                Wiimote.SetReportingMode(selectedReportingMode);
         }
 
         private void rumbleCheck_CheckedChanged(object sender, EventArgs e)

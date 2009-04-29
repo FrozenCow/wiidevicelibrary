@@ -602,7 +602,7 @@ namespace WiiDeviceLibrary
                 InitializeExtension();
 			else if (_Extension != null && !extensionConnected)
 			{
-                ReportingMode = ReportingMode.None;
+                ReportingMode = ReportingMode.Buttons;
 				if(ExtensionDetached != null)
 					ExtensionDetached(this, new WiimoteExtensionEventArgs(_Extension));
 				_Extension = null;
@@ -635,7 +635,16 @@ namespace WiiDeviceLibrary
         #region Extension Methods
         protected void InitializeExtension()
         {
-            WriteMemory(0x04a40040, 0); // Set the encryption-key to 0.
+            try
+            {
+                WriteMemory(0x04a40040, 0); // Set the encryption-key to 0.
+            }
+            catch (TimeoutException)
+            {
+                if (IsConnected)
+                    throw;
+                return;
+            }
             byte[] extensionTypeBytes = ReadMemory(0x04a400fe, 2);
             extensionTypeBytes[0] = (byte)((extensionTypeBytes[0] ^ 0x17) + 0x17 & 0xFF);
             extensionTypeBytes[1] = (byte)((extensionTypeBytes[1] ^ 0x17) + 0x17 & 0xFF);
@@ -657,7 +666,7 @@ namespace WiiDeviceLibrary
                         newExtension = new UnknownExtension(this);
                     break;
             }
-            ReportingMode = ReportingMode.None;
+            ReportingMode = ReportingMode.Buttons;
 			_Extension = newExtension;
 			if(_Extension != null)
 			{
@@ -671,7 +680,7 @@ namespace WiiDeviceLibrary
             if (Extension == null)
                 throw new InvalidOperationException("Can't detach extension: No extension is connected.");
 
-            ReportingMode = ReportingMode.None;
+            ReportingMode = ReportingMode.Buttons;
             _Extension.Detached();
 			if(ExtensionDetached != null)
 				ExtensionDetached(this, new WiimoteExtensionEventArgs(_Extension));
