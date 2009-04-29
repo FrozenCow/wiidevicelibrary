@@ -178,5 +178,13 @@ namespace WiiDeviceLibrary.Bluetooth.Bluez
 		
 		[DllImport("libc", SetLastError = true)]
 		public static extern int send(int socket, [MarshalAs(UnmanagedType.LPArray)]byte[] buffer, int length, int flags);			
+		
+        [DllImport ("libc", EntryPoint="strerror")]
+		static extern IntPtr _strerror(int errnum);
+		public static string strerror (int errnum)
+		{
+			return Marshal.PtrToStringAnsi (_strerror (errnum));
+		}		
+		
 	}
 }
