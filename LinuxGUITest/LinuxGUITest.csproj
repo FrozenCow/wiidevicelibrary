@@ -69,7 +69,7 @@
     <Compile Include="ClassicControllerInformation.cs" />
     <Compile Include="gtk-gui\LinuxGUITest.ClassicControllerInformation.cs" />
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\WiiDeviceLibrary\WiiDeviceLibrary.csproj">
       <Project>{07CC268B-22FE-4B59-AAE4-29EC88EEDE50}</Project>
