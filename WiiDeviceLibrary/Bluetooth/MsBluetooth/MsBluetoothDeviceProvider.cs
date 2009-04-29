@@ -30,14 +30,14 @@ namespace WiiDeviceLibrary.Bluetooth.MsBluetooth
     {
         private Thread discoveringThread;
 
-        private IDictionary<BluetoothAddress, MsBluetoothDeviceInfo> lookupFoundWiimotes = new Dictionary<BluetoothAddress, MsBluetoothDeviceInfo>();
+        private IDictionary<BluetoothAddress, MsBluetoothDeviceInfo> lookupFoundDevices = new Dictionary<BluetoothAddress, MsBluetoothDeviceInfo>();
         private ICollection<IDeviceInfo> foundDevices = new List<IDeviceInfo>();
         public ICollection<IDeviceInfo> FoundDevices
         {
             get { return foundDevices; }
         }
 
-        private IDictionary<MsBluetoothDeviceInfo, ReportWiimote> lookupConnectedWiimotes = new Dictionary<MsBluetoothDeviceInfo, ReportWiimote>();
+        private IDictionary<MsBluetoothDeviceInfo, ReportDevice> lookupConnectedDevices = new Dictionary<MsBluetoothDeviceInfo, ReportDevice>();
         private ICollection<IDevice> connectedDevices = new List<IDevice>();
         public ICollection<IDevice> ConnectedDevices
         {
@@ -72,11 +72,13 @@ namespace WiiDeviceLibrary.Bluetooth.MsBluetooth
             }
         }
 
-        private static bool IsWiimoteDevice(NativeMethods.BluetoothDeviceInfo deviceInfo)
+        private static bool IsWiiDevice(NativeMethods.BluetoothDeviceInfo deviceInfo)
         {
-            if (deviceInfo.name != "Nintendo RVL-CNT-01")
-                return false;
-            return true;
+            if (deviceInfo.name == "Nintendo RVL-CNT-01")
+                return true;
+            else if (deviceInfo.name == "Nintendo RVL-WBC-01")
+                return true;
+            return false;
         }
 
         internal static bool WaitTillConnected(NativeMethods.BluetoothAddress bluetoothAddress, TimeSpan timeout)
@@ -107,10 +109,10 @@ namespace WiiDeviceLibrary.Bluetooth.MsBluetooth
             MsHid.NativeMethods.WSAStartup();
             while (discoveringThread == Thread.CurrentThread)
             {
-                List<BluetoothAddress> notFoundAddresses = new List<BluetoothAddress>(lookupFoundWiimotes.Keys);
-                foreach (ReportWiimote wiimote in lookupConnectedWiimotes.Values)
+                List<BluetoothAddress> notFoundAddresses = new List<BluetoothAddress>(lookupFoundDevices.Keys);
+                foreach (ReportDevice device in lookupConnectedDevices.Values)
                 {
-                    notFoundAddresses.Remove(((MsBluetoothDeviceInfo)wiimote.DeviceInfo).BluetoothAddress);
+                    notFoundAddresses.Remove(((MsBluetoothDeviceInfo)device.DeviceInfo).Address);
                 }
 
                 IEnumerable<NativeMethods.BluetoothDeviceInfo> devices;
@@ -130,7 +132,7 @@ namespace WiiDeviceLibrary.Bluetooth.MsBluetooth
                 }
                 foreach (NativeMethods.BluetoothDeviceInfo deviceInfo in devices)
                 {
-                    if (!IsWiimoteDevice(deviceInfo))
+                    if (!IsWiiDevice(deviceInfo))
                         continue;
                     if (deviceInfo.connected)
                         continue;
@@ -142,27 +144,27 @@ namespace WiiDeviceLibrary.Bluetooth.MsBluetooth
 
                     BluetoothAddress address = new BluetoothAddress(deviceInfo.address.address);
                     notFoundAddresses.Remove(address);
-                    MsBluetoothDeviceInfo wiimoteInfo;
-                    if (lookupFoundWiimotes.TryGetValue(address, out wiimoteInfo))
+                    MsBluetoothDeviceInfo bluetoothDeviceInfo;
+                    if (lookupFoundDevices.TryGetValue(address, out bluetoothDeviceInfo))
                     {
-                        wiimoteInfo.Device = deviceInfo;
+                        bluetoothDeviceInfo.Device = deviceInfo;
                     }
                     else
                     {
-                        wiimoteInfo = new MsBluetoothDeviceInfo(address, deviceInfo);
-                        FoundDevices.Add(wiimoteInfo);
-                        lookupFoundWiimotes.Add(address, wiimoteInfo);
-                        OnWiimoteFound(new DeviceInfoEventArgs(wiimoteInfo));
+                        bluetoothDeviceInfo = new MsBluetoothDeviceInfo(address, deviceInfo);
+                        FoundDevices.Add(bluetoothDeviceInfo);
+                        lookupFoundDevices.Add(address, bluetoothDeviceInfo);
+                        OnDeviceFound(new DeviceInfoEventArgs(bluetoothDeviceInfo));
                     }
                 }
 
-                // Remove the lost wiimotes from the list and notify WiimoteLost event.
+                // Remove the lost devices from the list and notify DeviceLost event.
                 foreach (BluetoothAddress notFoundAddress in notFoundAddresses)
                 {
-                    IDeviceInfo notFoundWiimoteInfo = lookupFoundWiimotes[notFoundAddress];
-                    lookupFoundWiimotes.Remove(notFoundAddress);
-                    foundDevices.Remove(notFoundWiimoteInfo);
-                    OnWiimoteLost(new DeviceInfoEventArgs(notFoundWiimoteInfo));
+                    IDeviceInfo notFoundDeviceInfo = lookupFoundDevices[notFoundAddress];
+                    lookupFoundDevices.Remove(notFoundAddress);
+                    foundDevices.Remove(notFoundDeviceInfo);
+                    OnDeviceLost(new DeviceInfoEventArgs(notFoundDeviceInfo));
                 }
                 Thread.Sleep(1000);
             }
@@ -172,56 +174,64 @@ namespace WiiDeviceLibrary.Bluetooth.MsBluetooth
         {
             int result;
 
-            MsBluetoothDeviceInfo wiimoteInfo = deviceInfo as MsBluetoothDeviceInfo;
-            if (wiimoteInfo == null)
-                throw new ArgumentException("The specified IWiimoteInfo does not belong to this WiimoteProvider.", "deviceInfo");
+            MsBluetoothDeviceInfo bluetoothDeviceInfo = deviceInfo as MsBluetoothDeviceInfo;
+            if (bluetoothDeviceInfo == null)
+                throw new ArgumentException("The specified IDeviceInfo does not belong to this DeviceProvider.", "deviceInfo");
 
-            NativeMethods.BluetoothDeviceInfo wiimoteDevice = wiimoteInfo.Device;
+            NativeMethods.BluetoothDeviceInfo bluetoothDevice = bluetoothDeviceInfo.Device;
 
-            result = NativeMethods.BluetoothUpdateDeviceRecord(ref wiimoteDevice);
+            result = NativeMethods.BluetoothUpdateDeviceRecord(ref bluetoothDevice);
             NativeMethods.HandleError(result);
 
-            if (wiimoteDevice.connected)
+            if (bluetoothDevice.connected)
                 throw new NotImplementedException("The device is already connected.");
-            if (wiimoteDevice.remembered)
+            if (bluetoothDevice.remembered)
             {
-                // Remove non-connected wiimotes from MsBluetooth's device list.
+                // Remove non-connected devices from MsBluetooth's device list.
                 // This has to be done because:
                 //     MsBluetooth can't connect to Hid devices without also pairing to them.
                 // If you think that sounds crazy, you're on the right track.
-                NativeMethods.RemoveDevice(wiimoteDevice.address);
+                NativeMethods.RemoveDevice(bluetoothDevice.address);
             }
 
             Guid hidGuid = BluetoothServices.HumanInterfaceDeviceServiceClass_UUID;
-            result = NativeMethods.BluetoothSetServiceState(IntPtr.Zero, ref wiimoteDevice, ref hidGuid, 0x0001);
+            result = NativeMethods.BluetoothSetServiceState(IntPtr.Zero, ref bluetoothDevice, ref hidGuid, 0x0001);
             NativeMethods.HandleError(result);
 
-            if (WaitTillConnected(wiimoteDevice.address, TimeSpan.FromSeconds(30)))
+            if (WaitTillConnected(bluetoothDevice.address, TimeSpan.FromSeconds(30)))
             {
                 Thread.Sleep(2000);
 
-                ReportWiimote wiimote = null;
+                ReportDevice device = null;
                 foreach (KeyValuePair<string, SafeFileHandle> pair in MsHidDeviceProviderHelper.GetWiiDeviceHandles())
                 {
                     string devicePath = pair.Key;
                     SafeFileHandle fileHandle = pair.Value;
                     Stream communicationStream = new MsHidSetOutputReportStream(fileHandle);
-                    wiimote = new ReportWiimote(deviceInfo, communicationStream);
-                    if (MsHidDeviceProviderHelper.TryConnect(wiimote, communicationStream, devicePath, fileHandle))
-                        break;
-                    wiimote = null;
-                }
-                if (wiimote != null)
-                {
-                    lookupFoundWiimotes.Remove(wiimoteInfo.BluetoothAddress);
-                    foundDevices.Remove(wiimoteInfo);
-                    OnWiimoteLost(new DeviceInfoEventArgs(wiimoteInfo));
 
-                    wiimote.Disconnected += wiimote_Disconnected;
-                    ConnectedDevices.Add(wiimote);
-                    lookupConnectedWiimotes.Add(wiimoteInfo, wiimote);
-                    OnWiimoteConnected(new DeviceEventArgs(wiimote));
-                    return wiimote;
+                    // determine the device type
+                    if (bluetoothDeviceInfo.Name == "Nintendo RVL-WBC-01")
+                        device = new ReportBalanceBoard(deviceInfo, communicationStream);
+                    else if (bluetoothDeviceInfo.Name == "Nintendo RVL-CNT-01")
+                        device = new ReportWiimote(deviceInfo, communicationStream);
+                    else
+                        throw new ArgumentException("The specified deviceInfo with name '" + bluetoothDeviceInfo.Name + "' is not supported.", "deviceInfo");
+
+                    if (MsHidDeviceProviderHelper.TryConnect(device, communicationStream, devicePath, fileHandle))
+                        break;
+                    device = null;
+                }
+                if (device != null)
+                {
+                    lookupFoundDevices.Remove(bluetoothDeviceInfo.Address);
+                    foundDevices.Remove(bluetoothDeviceInfo);
+                    OnDeviceLost(new DeviceInfoEventArgs(bluetoothDeviceInfo));
+
+                    device.Disconnected += device_Disconnected;
+                    ConnectedDevices.Add(device);
+                    lookupConnectedDevices.Add(bluetoothDeviceInfo, device);
+                    OnDeviceConnected(new DeviceEventArgs(device));
+                    return device;
                 }
                 else
                     throw new DeviceConnectException("No working HID device found.");
@@ -232,13 +242,13 @@ namespace WiiDeviceLibrary.Bluetooth.MsBluetooth
             }
         }
 
-        private void wiimote_Disconnected(object sender, EventArgs e)
+        private void device_Disconnected(object sender, EventArgs e)
         {
             IDevice device = (IDevice)sender;
             MsBluetoothDeviceInfo deviceInfo = (MsBluetoothDeviceInfo)device.DeviceInfo;
-            device.Disconnected -= wiimote_Disconnected;
+            device.Disconnected -= device_Disconnected;
             connectedDevices.Remove(device);
-            lookupConnectedWiimotes.Remove(deviceInfo);
+            lookupConnectedDevices.Remove(deviceInfo);
 
             // The actual disconnecting on bluetooth-level.
             NativeMethods.BluetoothDeviceInfo bluetoothDeviceInfo = deviceInfo.Device;
@@ -252,12 +262,12 @@ namespace WiiDeviceLibrary.Bluetooth.MsBluetooth
 
             MsHidDeviceProviderHelper.SetDevicePathConnected(deviceInfo.DevicePath, false);
 
-            OnWiimoteDisconnected(new DeviceEventArgs(device));
+            OnDeviceDisconnected(new DeviceEventArgs(device));
         }
 
         #region Events
-        #region WiimoteConnected Event
-        protected virtual void OnWiimoteConnected(DeviceEventArgs e)
+        #region DeviceConnected Event
+        protected virtual void OnDeviceConnected(DeviceEventArgs e)
         {
             if (DeviceConnected == null)
                 return;
@@ -265,8 +275,8 @@ namespace WiiDeviceLibrary.Bluetooth.MsBluetooth
         }
         public event EventHandler<DeviceEventArgs> DeviceConnected;
         #endregion
-        #region WiimoteDisconnected Event
-        protected virtual void OnWiimoteDisconnected(DeviceEventArgs e)
+        #region DeviceDisconnected Event
+        protected virtual void OnDeviceDisconnected(DeviceEventArgs e)
         {
             if (DeviceDisconnected == null)
                 return;
@@ -274,8 +284,8 @@ namespace WiiDeviceLibrary.Bluetooth.MsBluetooth
         }
         public event EventHandler<DeviceEventArgs> DeviceDisconnected;
         #endregion
-        #region WiimoteFound Event
-        protected virtual void OnWiimoteFound(DeviceInfoEventArgs e)
+        #region DeviceFound Event
+        protected virtual void OnDeviceFound(DeviceInfoEventArgs e)
         {
             if (DeviceFound == null)
                 return;
@@ -283,8 +293,8 @@ namespace WiiDeviceLibrary.Bluetooth.MsBluetooth
         }
         public event EventHandler<DeviceInfoEventArgs> DeviceFound;
         #endregion
-        #region WiimoteLost Event
-        protected virtual void OnWiimoteLost(DeviceInfoEventArgs e)
+        #region DeviceLost Event
+        protected virtual void OnDeviceLost(DeviceInfoEventArgs e)
         {
             if (DeviceLost == null)
                 return;

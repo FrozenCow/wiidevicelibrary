@@ -124,7 +124,7 @@ namespace LinuxGUITest
 				LogLine("Found a device, trying to connect...");
 				string details = "unavailable";
 				if(args.DeviceInfo is IBluetoothDeviceInfo)
-					details = ((IBluetoothDeviceInfo)(args.DeviceInfo)).BluetoothAddress.ToString();
+                    details = ((IBluetoothDeviceInfo)(args.DeviceInfo)).Address.ToString();
 				iter = _ListStore.AppendValues("Device", details);
 			} );
 			try

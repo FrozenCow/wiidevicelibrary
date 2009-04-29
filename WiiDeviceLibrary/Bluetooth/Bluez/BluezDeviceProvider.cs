@@ -181,8 +181,8 @@ namespace WiiDeviceLibrary.Bluetooth.Bluez
 			{
 				if((DateTime.Now - info.LastSeen).TotalSeconds > 3)
 				{
-					_LostDevices[info.BluetoothAddress] = info;
-					_FoundDevices.Remove(info.BluetoothAddress);
+					_LostDevices[info.Address] = info;
+					_FoundDevices.Remove(info.Address);
 					if(DeviceLost != null)
 						DeviceLost(this, new DeviceInfoEventArgs(info));
 				}
@@ -253,7 +253,7 @@ namespace WiiDeviceLibrary.Bluetooth.Bluez
 		{
 			foreach(IDevice device in _ConnectedDevices)
 			{
-				if ((device.DeviceInfo as BluezDeviceInfo).BluetoothAddress.Equals(address))
+				if ((device.DeviceInfo as BluezDeviceInfo).Address.Equals(address))
 					return true;
 			}
 			return false;
@@ -273,7 +273,7 @@ namespace WiiDeviceLibrary.Bluetooth.Bluez
             if (info == null)
                 throw new ArgumentException("The specified IDeviceInfo does not belong to this DeviceProvider.", "deviceInfo");
             
-            Stream bluezStream = new BluezStream(info.BluetoothAddress);
+            Stream bluezStream = new BluezStream(info.Address);
             IWiiDevice device = null;
 			
 			// determine the device type
@@ -293,8 +293,8 @@ namespace WiiDeviceLibrary.Bluetooth.Bluez
 				throw new DeviceConnectException("Failed to connect to device", e);
 			}	
 
-			_FoundDevices.Remove(info.BluetoothAddress);
-			_LostDevices.Add(info.BluetoothAddress, info);			
+			_FoundDevices.Remove(info.Address);
+			_LostDevices.Add(info.Address, info);			
 			if(DeviceLost != null)
 				DeviceLost(this, new DeviceInfoEventArgs(info));
 			

@@ -32,7 +32,7 @@ namespace WiiDeviceLibrary.Bluetooth.Bluesoleil
         private Thread discoveringThread;
 
         private IDictionary<BluetoothAddress, BluesoleilDeviceInfo> lookupDeviceInfo = new Dictionary<BluetoothAddress, BluesoleilDeviceInfo>();
-        private IDictionary<BluetoothAddress, ReportWiimote> lookupDevice = new Dictionary<BluetoothAddress, ReportWiimote>();
+        private IDictionary<BluetoothAddress, ReportDevice> lookupDevice = new Dictionary<BluetoothAddress, ReportDevice>();
         private IDictionary<BluetoothAddress, BluetoothConnection> lookupConnection = new Dictionary<BluetoothAddress, BluetoothConnection>();
 
         private ICollection<IDeviceInfo> foundDevices = new List<IDeviceInfo>();
@@ -106,7 +106,7 @@ namespace WiiDeviceLibrary.Bluetooth.Bluesoleil
                     BluetoothDevice[] devices;
                     try
                     {
-                        // Scan for bluetooth-devices (like wiimotes).
+                        // Scan for bluetooth-devices (like devices).
                         devices = bluesoleil.InquireDevices(pollingTime);
                     }
                     catch (BluesoleilFailException)
@@ -124,6 +124,8 @@ namespace WiiDeviceLibrary.Bluetooth.Bluesoleil
                     List<BluetoothAddress> notFoundAddresses = new List<BluetoothAddress>(lookupDeviceInfo.Keys);
                     foreach (BluetoothDevice device in devices)
                     {
+                        if (!IsWiiDevice(device))
+                            continue;
                         BluetoothAddress address = new BluetoothAddress(device.Address);
                         if (lookupDeviceInfo.ContainsKey(address))
                         {
@@ -134,7 +136,7 @@ namespace WiiDeviceLibrary.Bluetooth.Bluesoleil
                         BluetoothService[] services = null;
                         try
                         {
-                            // Scan for bluetooth-devices (like wiimotes).
+                            // Scan for bluetooth-devices (like devices).
                             services = bluesoleil.BrowseServices(device);
                             Thread.Sleep(1000);
                         }
@@ -154,16 +156,16 @@ namespace WiiDeviceLibrary.Bluetooth.Bluesoleil
 
                         if (!lookupDeviceInfo.ContainsKey(address))
                         {
-                            BluesoleilDeviceInfo foundWiimote = new BluesoleilDeviceInfo(device, services[1]);
-                            OnWiimoteFound(foundWiimote);
+                            BluesoleilDeviceInfo foundDevice = new BluesoleilDeviceInfo(device, services[1]);
+                            OnDeviceFound(foundDevice);
                         }
                     }
 
-                    // Remove the lost wiimotes from the list and notify WiimoteLost event.
+                    // Remove the lost devices from the list and notify DeviceLost event.
                     foreach (BluetoothAddress notFoundAddress in notFoundAddresses)
                     {
-                        BluesoleilDeviceInfo notFoundWiimoteInfo = lookupDeviceInfo[notFoundAddress];
-                        OnWiimoteLost(notFoundWiimoteInfo);
+                        BluesoleilDeviceInfo notFoundDeviceInfo = lookupDeviceInfo[notFoundAddress];
+                        OnDeviceLost(notFoundDeviceInfo);
                     }
 
                     Thread.Sleep(1000);
@@ -173,43 +175,60 @@ namespace WiiDeviceLibrary.Bluetooth.Bluesoleil
             }
         }
 
+        private bool IsWiiDevice(BluetoothDevice device)
+        {
+            if (device.Name == "Nintendo RVL-CNT-01")
+                return true;
+            else if (device.Name == "Nintendo RVL-WBC-01")
+                return true;
+            return false;
+        }
+
         public IDevice Connect(IDeviceInfo deviceInfo)
         {
-            BluesoleilDeviceInfo bsDeviceInfo = (BluesoleilDeviceInfo)deviceInfo;
-            BluetoothConnection connection = BluesoleilService.Instance.ConnectService(bsDeviceInfo.Service);
+            BluesoleilDeviceInfo bluetoothDeviceInfo = (BluesoleilDeviceInfo)deviceInfo;
+            BluetoothConnection connection = BluesoleilService.Instance.ConnectService(bluetoothDeviceInfo.Service);
 
-            ReportWiimote wiimote = null;
+            ReportDevice device = null;
             foreach (KeyValuePair<string, SafeFileHandle> pair in MsHidDeviceProviderHelper.GetWiiDeviceHandles())
             {
                 string devicePath = pair.Key;
                 SafeFileHandle fileHandle = pair.Value;
                 Stream communicationStream = new MsHidStream(fileHandle);
-                wiimote = new ReportWiimote(deviceInfo, communicationStream);
-                if (MsHidDeviceProviderHelper.TryConnect(wiimote, communicationStream, devicePath, fileHandle))
+
+                // determine the device type
+                if (bluetoothDeviceInfo.Name == "Nintendo RVL-WBC-01")
+                    device = new ReportBalanceBoard(deviceInfo, communicationStream);
+                else if (bluetoothDeviceInfo.Name == "Nintendo RVL-CNT-01")
+                    device = new ReportWiimote(deviceInfo, communicationStream);
+                else
+                    throw new ArgumentException("The specified deviceInfo with name '" + bluetoothDeviceInfo.Name + "' is not supported.", "deviceInfo");
+
+                if (MsHidDeviceProviderHelper.TryConnect(device, communicationStream, devicePath, fileHandle))
                     break;
-                wiimote = null;
+                device = null;
             }
-            if (wiimote == null)
+            if (device == null)
             {
                 bluesoleil.DisconnectService(connection);
                 throw new DeviceConnectException("The connected bluetooth device was not found in the HID-list.");
             }
 
-            wiimote.Disconnected += new EventHandler(wiimote_Disconnected);
-            lookupConnection.Add(bsDeviceInfo.BluetoothAddress, connection);
-            OnWiimoteConnected(wiimote);
-            return wiimote;
+            device.Disconnected += new EventHandler(device_Disconnected);
+            lookupConnection.Add(bluetoothDeviceInfo.Address, connection);
+            OnDeviceConnected(device);
+            return device;
         }
 
-        void wiimote_Disconnected(object sender, EventArgs e)
+        void device_Disconnected(object sender, EventArgs e)
         {
-            ReportWiimote wiimote = (ReportWiimote)sender;
-            BluesoleilDeviceInfo deviceInfo = (BluesoleilDeviceInfo)wiimote.DeviceInfo;
+            ReportDevice device = (ReportDevice)sender;
+            BluesoleilDeviceInfo deviceInfo = (BluesoleilDeviceInfo)device.DeviceInfo;
             BluetoothConnection connection;
-            if (lookupConnection.TryGetValue(deviceInfo.BluetoothAddress, out connection))
+            if (lookupConnection.TryGetValue(deviceInfo.Address, out connection))
             {
-                lookupConnection.Remove(deviceInfo.BluetoothAddress);
-                OnWiimoteDisconnected(wiimote);
+                lookupConnection.Remove(deviceInfo.Address);
+                OnDeviceDisconnected(device);
                 try
                 {
                     bluesoleil.DisconnectService(connection);
@@ -225,51 +244,51 @@ namespace WiiDeviceLibrary.Bluetooth.Bluesoleil
         private void OnConnectionClosed(object sender, BluetoothConnectionEventArgs e)
         {
             BluetoothAddress address = new BluetoothAddress(e.BluetoothConnection.Service.Device.Address);
-            ReportWiimote wiimote;
-            if (lookupDevice.TryGetValue(address, out wiimote))
+            ReportDevice device;
+            if (lookupDevice.TryGetValue(address, out device))
             {
-                wiimote.Disconnect();
+                device.Disconnect();
             }
         }
 
-        private void OnWiimoteConnected(ReportWiimote device)
+        private void OnDeviceConnected(ReportDevice device)
         {
             BluesoleilDeviceInfo deviceInfo = (BluesoleilDeviceInfo)device.DeviceInfo;
 
-            OnWiimoteLost(deviceInfo);
-            lookupDevice.Add(deviceInfo.BluetoothAddress, device);
+            OnDeviceLost(deviceInfo);
+            lookupDevice.Add(deviceInfo.Address, device);
             connectedDevices.Add(device);
-            OnWiimoteConnected(new DeviceEventArgs(device));
+            OnDeviceConnected(new DeviceEventArgs(device));
         }
 
-        private void OnWiimoteDisconnected(ReportWiimote device)
+        private void OnDeviceDisconnected(ReportDevice device)
         {
             BluesoleilDeviceInfo deviceInfo = (BluesoleilDeviceInfo)device.DeviceInfo;
 
-            lookupDevice.Remove(deviceInfo.BluetoothAddress);
+            lookupDevice.Remove(deviceInfo.Address);
             connectedDevices.Remove(device);
-            OnWiimoteDisconnected(new DeviceEventArgs(device));
+            OnDeviceDisconnected(new DeviceEventArgs(device));
         }
 
-        private void OnWiimoteFound(BluesoleilDeviceInfo deviceInfo)
+        private void OnDeviceFound(BluesoleilDeviceInfo deviceInfo)
         {
-            lookupDeviceInfo.Add(deviceInfo.BluetoothAddress, deviceInfo);
+            lookupDeviceInfo.Add(deviceInfo.Address, deviceInfo);
             foundDevices.Add(deviceInfo);
 
-            OnWiimoteFound(new DeviceInfoEventArgs(deviceInfo));
+            OnDeviceFound(new DeviceInfoEventArgs(deviceInfo));
         }
 
-        private void OnWiimoteLost(BluesoleilDeviceInfo deviceInfo)
+        private void OnDeviceLost(BluesoleilDeviceInfo deviceInfo)
         {
-            lookupDeviceInfo.Remove(deviceInfo.BluetoothAddress);
+            lookupDeviceInfo.Remove(deviceInfo.Address);
             foundDevices.Remove(deviceInfo);
 
-            OnWiimoteLost(new DeviceInfoEventArgs(deviceInfo));
+            OnDeviceLost(new DeviceInfoEventArgs(deviceInfo));
         }
 
         #region Events
-        #region WiimoteConnected Event
-        protected virtual void OnWiimoteConnected(DeviceEventArgs e)
+        #region DeviceConnected Event
+        protected virtual void OnDeviceConnected(DeviceEventArgs e)
         {
             if (DeviceConnected == null)
                 return;
@@ -277,8 +296,8 @@ namespace WiiDeviceLibrary.Bluetooth.Bluesoleil
         }
         public event EventHandler<DeviceEventArgs> DeviceConnected;
         #endregion
-        #region WiimoteDisconnected Event
-        protected virtual void OnWiimoteDisconnected(DeviceEventArgs e)
+        #region DeviceDisconnected Event
+        protected virtual void OnDeviceDisconnected(DeviceEventArgs e)
         {
             if (DeviceDisconnected == null)
                 return;
@@ -286,8 +305,8 @@ namespace WiiDeviceLibrary.Bluetooth.Bluesoleil
         }
         public event EventHandler<DeviceEventArgs> DeviceDisconnected;
         #endregion
-        #region WiimoteFound Event
-        protected virtual void OnWiimoteFound(DeviceInfoEventArgs e)
+        #region DeviceFound Event
+        protected virtual void OnDeviceFound(DeviceInfoEventArgs e)
         {
             if (DeviceFound == null)
                 return;
@@ -295,8 +314,8 @@ namespace WiiDeviceLibrary.Bluetooth.Bluesoleil
         }
         public event EventHandler<DeviceInfoEventArgs> DeviceFound;
         #endregion
-        #region WiimoteLost Event
-        protected virtual void OnWiimoteLost(DeviceInfoEventArgs e)
+        #region DeviceLost Event
+        protected virtual void OnDeviceLost(DeviceInfoEventArgs e)
         {
             if (DeviceLost == null)
                 return;

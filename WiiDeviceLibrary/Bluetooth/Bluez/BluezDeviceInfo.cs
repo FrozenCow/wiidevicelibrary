@@ -22,15 +22,15 @@ namespace WiiDeviceLibrary.Bluetooth.Bluez
 	public class BluezDeviceInfo : IBluetoothDeviceInfo
 	{
 		#region Fields
-		private BluetoothAddress _BluetoothAddress;
+		private BluetoothAddress _Address;
 		private DateTime _LastSeen;
 		private string _Name = String.Empty;
         #endregion
 		
         #region Properties
-		public BluetoothAddress BluetoothAddress
+		public BluetoothAddress Address
 		{
-			get { return _BluetoothAddress; }
+			get { return _Address; }
 		}
 		
 		public string Name
@@ -47,7 +47,7 @@ namespace WiiDeviceLibrary.Bluetooth.Bluez
 		
 		internal BluezDeviceInfo(BluetoothAddress bluetoothAddress, string name)
 		{
-			_BluetoothAddress = bluetoothAddress;
+			_Address = bluetoothAddress;
 			_Name = name;
 			_LastSeen = DateTime.Now;
 		}

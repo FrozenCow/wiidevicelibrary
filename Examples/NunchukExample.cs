@@ -52,7 +52,7 @@ namespace Examples
 
             if (lostDeviceInfo is IBluetoothDeviceInfo)
             {
-                Console.WriteLine("The address of the Bluetooth device is {0}", ((IBluetoothDeviceInfo)lostDeviceInfo).BluetoothAddress);
+                Console.WriteLine("The address of the Bluetooth device is {0}", ((IBluetoothDeviceInfo)lostDeviceInfo).Address);
             }
         }
         #endregion
