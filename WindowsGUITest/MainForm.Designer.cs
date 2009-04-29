@@ -63,7 +63,7 @@ namespace WindowsGUITest
             this.devicesBox.FormattingEnabled = true;
             this.devicesBox.Location = new System.Drawing.Point(0, 0);
             this.devicesBox.Name = "devicesBox";
-            this.devicesBox.Size = new System.Drawing.Size(172, 394);
+            this.devicesBox.Size = new System.Drawing.Size(172, 472);
             this.devicesBox.TabIndex = 0;
             this.devicesBox.SelectedValueChanged += new System.EventHandler(this.devicesBox_SelectedValueChanged);
             // 
@@ -72,7 +72,7 @@ namespace WindowsGUITest
             this.connectButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.connectButton.Enabled = false;
-            this.connectButton.Location = new System.Drawing.Point(0, 428);
+            this.connectButton.Location = new System.Drawing.Point(0, 517);
             this.connectButton.Name = "connectButton";
             this.connectButton.Size = new System.Drawing.Size(172, 23);
             this.connectButton.TabIndex = 1;
@@ -96,7 +96,7 @@ namespace WindowsGUITest
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.wiidevicePanel);
-            this.splitContainer1.Size = new System.Drawing.Size(729, 451);
+            this.splitContainer1.Size = new System.Drawing.Size(729, 540);
             this.splitContainer1.SplitterDistance = 172;
             this.splitContainer1.TabIndex = 2;
             // 
@@ -104,7 +104,7 @@ namespace WindowsGUITest
             // 
             this.autoconnectBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.autoconnectBox.Location = new System.Drawing.Point(0, 398);
+            this.autoconnectBox.Location = new System.Drawing.Point(0, 487);
             this.autoconnectBox.Name = "autoconnectBox";
             this.autoconnectBox.Size = new System.Drawing.Size(172, 24);
             this.autoconnectBox.TabIndex = 2;
@@ -120,7 +120,7 @@ namespace WindowsGUITest
             this.wiidevicePanel.Location = new System.Drawing.Point(0, 0);
             this.wiidevicePanel.Name = "wiidevicePanel";
             this.wiidevicePanel.Padding = new System.Windows.Forms.Padding(3);
-            this.wiidevicePanel.Size = new System.Drawing.Size(553, 451);
+            this.wiidevicePanel.Size = new System.Drawing.Size(553, 540);
             this.wiidevicePanel.TabIndex = 0;
             this.wiidevicePanel.WrapContents = false;
             // 
@@ -128,7 +128,7 @@ namespace WindowsGUITest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(745, 467);
+            this.ClientSize = new System.Drawing.Size(745, 556);
             this.Controls.Add(this.splitContainer1);
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(8);
