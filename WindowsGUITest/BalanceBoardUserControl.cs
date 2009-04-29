@@ -55,32 +55,41 @@ namespace WindowsGUITest
 
             _BoxX = (float)random.NextDouble();
             _BoxY = (float)random.NextDouble();
-
-            Application.Idle += Application_Idle;
-        }
-
-        void Application_Idle(object sender, EventArgs e)
-        {
-            if (BalanceBoard != null)
-            {
-                buttonBox.Text = BalanceBoard.Button.ToString();
-                topLeftWeightBox.Text = BalanceBoard.TopLeftWeight.ToString();
-                topRightWeightBox.Text = BalanceBoard.TopRightWeight.ToString();
-                bottomLeftWeightBox.Text = BalanceBoard.BottomLeftWeight.ToString();
-                bottomRightWeightBox.Text = BalanceBoard.BottomRightWeight.ToString();
-                totalWeightBox.Text = BalanceBoard.TotalWeight.ToString();
-                averageWeight = averageWeight * 0.9f + BalanceBoard.TotalWeight * 0.1f;
-                averageWeightBox.Text = averageWeight.ToString();
-            }
         }
 
         private void InitializeBalanceboard()
         {
+            if (!IsHandleCreated)
+                CreateControl();
             ledCheck.Checked = BalanceBoard.Led;
+
+            BalanceBoard.Updated += BalanceBoard_Updated;
+        }
+
+        void BalanceBoard_Updated(object sender, EventArgs e)
+        {
+            if (BalanceBoard != null)
+            {
+                balanceBox.Invalidate();
+            }
+        }
+
+        public void UpdateUI()
+        {
+            buttonBox.Text = BalanceBoard.Button.ToString();
+            topLeftWeightBox.Text = BalanceBoard.TopLeftWeight.ToString();
+            topRightWeightBox.Text = BalanceBoard.TopRightWeight.ToString();
+            bottomLeftWeightBox.Text = BalanceBoard.BottomLeftWeight.ToString();
+            bottomRightWeightBox.Text = BalanceBoard.BottomRightWeight.ToString();
+            totalWeightBox.Text = BalanceBoard.TotalWeight.ToString();
+            averageWeight = averageWeight * 0.9f + BalanceBoard.TotalWeight * 0.1f;
+            averageWeightBox.Text = averageWeight.ToString();
         }
 
         private void balanceBox_Paint(object sender, PaintEventArgs e)
         {
+            UpdateUI();
+
             Graphics g = e.Graphics;
             Pen p = Pens.White;
             float width = balanceBox.Width;
@@ -101,7 +110,9 @@ namespace WindowsGUITest
             float y = ((BalanceBoard.BottomLeftWeight + BalanceBoard.BottomRightWeight) - (BalanceBoard.TopRightWeight + BalanceBoard.TopLeftWeight)) / total * height / 2f;
             int dotX = (int)(x + width / 2f - 1);
             int dotY = (int)(y + height / 2f - 1);
-            g.DrawRectangle(p, dotX, dotY, 3, 3);
+            if (dotX >= 0 && dotX < width &&
+                dotY >= 0 && dotY < height)
+                g.DrawRectangle(p, dotX, dotY, 3, 3);
 
             // test for collision, and relocate box on collision
             if (dotX + 2 > boxX && dotX + 2 < boxX + 10 && dotY + 2 > boxY && dotY + 2 < boxY + 10)
