@@ -77,4 +77,8 @@ namespace WiiDeviceLibrary.Bluetooth.Bluesoleil
     {
     }
 
+    public class BluesoleilNonExistingConnectionException : BluesoleilException
+    {
+    }
+
 }

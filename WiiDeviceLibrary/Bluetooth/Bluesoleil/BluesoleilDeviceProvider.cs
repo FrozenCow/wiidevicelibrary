@@ -233,7 +233,7 @@ namespace WiiDeviceLibrary.Bluetooth.Bluesoleil
                 {
                     bluesoleil.DisconnectService(connection);
                 }
-                catch (BluesoleilException)
+                catch (BluesoleilNonExistingConnectionException)
                 {
                 }
 

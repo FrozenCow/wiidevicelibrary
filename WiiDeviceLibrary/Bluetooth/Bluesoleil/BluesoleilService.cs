@@ -111,6 +111,8 @@ namespace WiiDeviceLibrary.Bluetooth.Bluesoleil
                         throw new BluesoleilBluetoothBusyException();
                     case NativeMethods.BTSTATUS.BTSTATUS_SYSTEM_ERROR:
                         throw new BluesoleilSystemException();
+                    case NativeMethods.BTSTATUS.BTSTATUS_CONNECTION_NOT_EXIST:
+                        throw new BluesoleilNonExistingConnectionException();
                     default:
                         throw new BluesoleilException(status.ToString());
                 }
