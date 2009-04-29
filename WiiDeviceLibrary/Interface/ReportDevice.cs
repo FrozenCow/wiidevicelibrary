@@ -103,7 +103,7 @@ namespace WiiDeviceLibrary
             get { return _DeviceInfo; }
         }
 
-        private ReportingMode _ReportingMode;
+        private ReportingMode _ReportingMode = ReportingMode.Buttons;
         public ReportingMode ReportingMode
         {
             get { return _ReportingMode; }
