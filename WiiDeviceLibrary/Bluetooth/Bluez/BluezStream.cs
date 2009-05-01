@@ -75,6 +75,7 @@ namespace WiiDeviceLibrary.Bluetooth.Bluez
 			// create l2cap address
             NativeMethods.sockaddr_l2 address;
             address.l2_family = NativeMethods.AF_BLUETOOTH;
+			address.l2_cid = 0;
 			
             // allocate sockets
 			_ControlSocket = -1;

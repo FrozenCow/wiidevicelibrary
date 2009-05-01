@@ -132,12 +132,13 @@ namespace WiiDeviceLibrary.Bluetooth.Bluez
 			public byte f;
 		}
 		
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, Pack=2)]
 		internal struct sockaddr_l2
 		{
 			public ushort l2_family;
 			public ushort l2_psm;
 			public bdaddr_t bdaddr;
+			public ushort l2_cid;
 		}
 	
 		[DllImport("libc")]
