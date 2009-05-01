@@ -124,8 +124,9 @@ namespace WiiDeviceLibrary.Bluetooth.MsBluetooth
                 {
                     if (e.ErrorCode == -2147467259)
                     {
-                        // TODO: This should be checked at the constructor or StartDiscovering, if possible...
-                        throw new InvalidOperationException("No bluetooth adapter was found.");
+                        // The dongle was not available, so try again later.
+                        Thread.Sleep(1000);
+                        continue;
                     }
                     else
                         throw;
