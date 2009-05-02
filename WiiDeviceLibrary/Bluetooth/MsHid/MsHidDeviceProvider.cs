@@ -107,7 +107,6 @@ namespace WiiDeviceLibrary.Bluetooth.MsHid
                 throw new ArgumentException("The specified WiimoteInfo does not belong to this WiimoteProvider.", "deviceInfo");
             string devicePath = hidWiimoteInfo.DevicePath;
 
-            // TODO: Find out which to choose. (is this specific to the stack, OS or should this be interpret as 'random'.
             Stream hidStream;
             if (UseSetOutputReport)
                 hidStream = new MsHidSetOutputReportStream(devicePath);

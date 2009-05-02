@@ -81,41 +81,5 @@ namespace WiiDeviceLibrary.Bluetooth.MsHid
             }
             return success;
         }
-
-        // TODO: Make this compatible with ReportBalanceBoard too.
-        public static bool TryConnectWiimote(MsHidDeviceInfo deviceInfo, out ReportWiimote wiimote)
-        {
-            wiimote = null;
-            foreach (string devicePath in MsHidHelper.GetDevicePaths())
-            {
-                SafeFileHandle fileHandle = MsHidHelper.CreateFileHandle(devicePath);
-
-                int vendorId, productId;
-                if (MsHidHelper.TryGetHidInfo(fileHandle, out vendorId, out productId))
-                {
-                    if (IsDevicePathConnected(devicePath))
-                        continue;
-                    Stream communicationStream = new UnsureMsHidStream(fileHandle);
-                    wiimote = new ReportWiimote(deviceInfo, communicationStream);
-                    try
-                    {
-                        wiimote.Initialize();
-                    }
-                    catch (TimeoutException)
-                    {
-                        wiimote.Disconnect();
-                        communicationStream.Dispose();
-                        wiimote = null;
-                        continue;
-                    }
-
-                    deviceInfo.DevicePath = devicePath;
-                    SetDevicePathConnected(devicePath, true);
-                    break;
-                }
-                fileHandle.Close();
-            }
-            return wiimote != null;
-        }
     }
 }
