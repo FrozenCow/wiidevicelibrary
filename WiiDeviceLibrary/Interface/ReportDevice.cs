@@ -128,6 +128,8 @@ namespace WiiDeviceLibrary
 
         public virtual void SetReportingMode(ReportingMode reportMode)
         {
+            if (reportMode == ReportingMode.None)
+                throw new ArgumentException("The ReportingMode cannot be set to None.", "reportMode");
             CreateReport(OutputReport.SetDataReportMode);
             OutputBuffer[1] = 0x04;
             OutputBuffer[2] = (byte)reportMode;

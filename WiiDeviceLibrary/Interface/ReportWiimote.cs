@@ -602,7 +602,7 @@ namespace WiiDeviceLibrary
                 InitializeExtension();
 			else if (_Extension != null && !extensionConnected)
 			{
-                ReportingMode = ReportingMode.Buttons;
+                ReportingMode = ReportingMode.None;
 				if(ExtensionDetached != null)
 					ExtensionDetached(this, new WiimoteExtensionEventArgs(_Extension));
 				_Extension = null;
@@ -666,7 +666,7 @@ namespace WiiDeviceLibrary
                         newExtension = new UnknownExtension(this);
                     break;
             }
-            ReportingMode = ReportingMode.Buttons;
+            ReportingMode = ReportingMode.None;
 			_Extension = newExtension;
 			if(_Extension != null)
 			{
@@ -680,7 +680,7 @@ namespace WiiDeviceLibrary
             if (Extension == null)
                 throw new InvalidOperationException("Can't detach extension: No extension is connected.");
 
-            ReportingMode = ReportingMode.Buttons;
+            ReportingMode = ReportingMode.None;
             _Extension.Detached();
 			if(ExtensionDetached != null)
 				ExtensionDetached(this, new WiimoteExtensionEventArgs(_Extension));

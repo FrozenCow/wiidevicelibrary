@@ -23,6 +23,7 @@ namespace WiiDeviceLibrary
 {
     public enum ReportingMode
     {
+        None = 0x00,
         Buttons = 0x30,
         ButtonsAccelerometer = 0x31,
         Buttons8Extension = 0x32,

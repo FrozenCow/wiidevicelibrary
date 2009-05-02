@@ -199,6 +199,8 @@ namespace LinuxGUITest
 		{
             foreach (ReportingMode reportingMode in Enum.GetValues(typeof(ReportingMode)))
 			{
+				if (reportingMode == ReportingMode.None)
+					continue;
                 if (comboboxReportingMode.ActiveText == reportingMode.ToString())
 				{
                     if (reportingMode != _Wiimote.ReportingMode)
