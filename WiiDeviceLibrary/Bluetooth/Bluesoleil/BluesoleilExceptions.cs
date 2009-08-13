@@ -25,20 +25,9 @@ namespace WiiDeviceLibrary.Bluetooth.Bluesoleil
     [global::System.Serializable]
     public class BluesoleilException : Exception
     {
-        //
-        // For guidelines regarding the creation of new exception types, see
-        //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/cpgenref/html/cpconerrorraisinghandlingguidelines.asp
-        // and
-        //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dncscol/html/csharp07192001.asp
-        //
-
         public BluesoleilException() { }
         public BluesoleilException(string message) : base(message) { }
         public BluesoleilException(string message, Exception inner) : base(message, inner) { }
-        protected BluesoleilException(
-          System.Runtime.Serialization.SerializationInfo info,
-          System.Runtime.Serialization.StreamingContext context)
-            : base(info, context) { }
     }
 
     public class BluesoleilFailException : BluesoleilException
