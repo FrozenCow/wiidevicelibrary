@@ -167,12 +167,14 @@ namespace WiiDeviceLibrary.Bluetooth.Bluesoleil
         {
             NativeMethods.BTSTATUS status = NativeMethods.BT_StartBluetooth();
             ValidateStatus(status);
+            OnBluetoothStarted(EventArgs.Empty);
         }
 
         public void StopBluetooth()
         {
             NativeMethods.BTSTATUS status = NativeMethods.BT_StartBluetooth();
             ValidateStatus(status);
+            OnBluetoothStopped(EventArgs.Empty);
         }
 
         public BluetoothDevice[] InquireDevices(TimeSpan timeOut)
