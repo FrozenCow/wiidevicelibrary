@@ -26,6 +26,7 @@ namespace WiiDeviceLibrary
     public abstract class ReportDevice : IDevice
     {
         #region Fields
+        private static TimeSpan ReportTimeout = TimeSpan.FromSeconds(2);
         private const int maximalReportLength = 22;
         private byte[] outputBuffer = new byte[maximalReportLength];
         private static readonly byte[] reportLengths = new byte[0x40];
@@ -381,7 +382,7 @@ namespace WiiDeviceLibrary
         }
         protected byte[] SendAndReturnReport(InputReport returnReportType)
         {
-            return SendAndReturnReport(returnReportType, TimeSpan.FromSeconds(3));
+            return SendAndReturnReport(returnReportType, ReportTimeout);
         }
 
         protected byte[] SendAndReturnReport(InputReport returnReportType, TimeSpan timeout)
@@ -446,7 +447,7 @@ namespace WiiDeviceLibrary
             TimeSpan timeout;
 
             public AsyncReportInterceptor(ReportDevice device)
-                : this(device, TimeSpan.FromSeconds(5))
+                : this(device, ReportTimeout)
             {
             }
 
