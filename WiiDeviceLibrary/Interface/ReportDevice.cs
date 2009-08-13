@@ -156,11 +156,16 @@ namespace WiiDeviceLibrary
             {
                 SendReport();
                 byte[] report = null;
+
+                // Since ReadMemory can have multiple response-reports we have to intercept
+                // all ReadDataResult-reports that follow the ReadMemory-report.
                 while ((report = reportInterceptor.Intercept()) != null)
                 {
                     if (report[0] == (byte)InputReport.ReadDataResult)
                     {
                         int size = (report[3] >> 4) + 1;
+
+                        // The data from ReadDataResult is added to the buffer.
                         Array.Copy(report, 6, buffer, offset + i * 16, size);
                         i++;
                         if (size != 16 || i * 16 == count)
