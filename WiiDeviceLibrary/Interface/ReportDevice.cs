@@ -390,10 +390,16 @@ namespace WiiDeviceLibrary
             using (IReportInterceptor reportInterceptor = CreateReportInterceptor())
             {
                 SendReport();
+                DateTime start = DateTime.Now;
                 while ((report = reportInterceptor.Intercept()) != null)
                 {
                     if (report[0] == (byte)returnReportType)
                         break;
+                    if (DateTime.Now - start > timeout)
+                    {
+                        report = null;
+                        break;
+                    }
                 }
             }
             if (report == null)
