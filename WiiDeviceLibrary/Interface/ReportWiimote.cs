@@ -562,20 +562,6 @@ namespace WiiDeviceLibrary
         #endregion
         #endregion
 
-        /// <summary>
-        /// Decrypts data sent from the extension to the Wiimote
-        /// </summary>
-        /// <param name="buff">Data buffer</param>
-        /// <returns>Byte array containing decoded data</returns>
-        protected static byte[] DecryptBuffer(byte[] buff)
-        {
-            byte[] result = new byte[buff.Length];
-            for (int i = 0; i < buff.Length; i++)
-                result[i] = (byte)(((buff[i] ^ 0x17) + 0x17) & 0xff);
-
-            return result;
-        }
-
         protected void ParseExtension(byte[] buff, int offset, int count)
         {
             if (Extension != null)
@@ -626,6 +612,7 @@ namespace WiiDeviceLibrary
         {
             WriteMemory(address, data, 0, (byte)data.Length);
         }
+
         protected void WriteMemory(uint address, byte data)
         {
             WriteMemory(address, new byte[] { data });
