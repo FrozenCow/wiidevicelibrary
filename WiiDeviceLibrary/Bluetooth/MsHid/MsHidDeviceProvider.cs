@@ -79,7 +79,7 @@ namespace WiiDeviceLibrary.Bluetooth.MsHid
                 {
                     MsHidDeviceInfo deviceInfo = new MsHidDeviceInfo(devicePath);
                     _FoundDevices.Add(devicePath, deviceInfo);
-                    OnWiimoteFound(new DeviceInfoEventArgs(deviceInfo));
+                    OnDeviceFound(new DeviceInfoEventArgs(deviceInfo));
                 }
             }
             if (devicePaths.Count < _FoundDevices.Count)
@@ -94,7 +94,7 @@ namespace WiiDeviceLibrary.Bluetooth.MsHid
                 }
                 foreach (string devicePathToBeRemoved in devicesToBeRemoved)
                 {
-                    OnWiimoteLost(new DeviceInfoEventArgs(_FoundDevices[devicePathToBeRemoved]));
+                    OnDeviceLost(new DeviceInfoEventArgs(_FoundDevices[devicePathToBeRemoved]));
                     _FoundDevices.Remove(devicePathToBeRemoved);
                 }
             }
@@ -102,25 +102,32 @@ namespace WiiDeviceLibrary.Bluetooth.MsHid
 
         public IDevice Connect(IDeviceInfo deviceInfo)
         {
-            MsHidDeviceInfo hidWiimoteInfo = deviceInfo as MsHidDeviceInfo;
-            if (hidWiimoteInfo == null)
-                throw new ArgumentException("The specified WiimoteInfo does not belong to this WiimoteProvider.", "deviceInfo");
-            string devicePath = hidWiimoteInfo.DevicePath;
+            MsHidDeviceInfo hidDeviceInfo = deviceInfo as MsHidDeviceInfo;
+            if (hidDeviceInfo == null)
+                throw new ArgumentException("The specified DeviceInfo does not belong to this DeviceProvider.", "deviceInfo");
+            string devicePath = hidDeviceInfo.DevicePath;
 
-            Stream hidStream;
-            if (UseSetOutputReport)
-                hidStream = new MsHidSetOutputReportStream(devicePath);
-            else
-                hidStream = new MsHidStream(devicePath);
+            Stream hidStream = new UnsureMsHidStream(devicePath);
 
             ReportWiimote wiimote = new ReportWiimote(deviceInfo, hidStream);
+            wiimote.Initialize();
+
             ConnectedDevices.Add(wiimote);
+            wiimote.Disconnected += new EventHandler(wiimote_Disconnected);
+            OnDeviceConnected(new DeviceEventArgs(wiimote));
             return wiimote;
         }
 
+        void wiimote_Disconnected(object sender, EventArgs e)
+        {
+            ReportWiimote wiimote = sender as ReportWiimote;
+            ConnectedDevices.Remove(wiimote);
+            OnDeviceDisconnected(new DeviceEventArgs(wiimote));
+        }
+
         #region Events
-        #region WiimoteConnected Event
-        protected virtual void OnWiimoteConnected(DeviceEventArgs e)
+        #region DeviceConnected Event
+        protected virtual void OnDeviceConnected(DeviceEventArgs e)
         {
             if (DeviceConnected == null)
                 return;
@@ -129,8 +136,8 @@ namespace WiiDeviceLibrary.Bluetooth.MsHid
         public event EventHandler<DeviceEventArgs> DeviceConnected;
         #endregion
 
-        #region WiimoteDisconnected Event
-        protected virtual void OnWiimoteDisconnected(DeviceEventArgs e)
+        #region DeviceDisconnected Event
+        protected virtual void OnDeviceDisconnected(DeviceEventArgs e)
         {
             if (DeviceDisconnected == null)
                 return;
@@ -139,8 +146,8 @@ namespace WiiDeviceLibrary.Bluetooth.MsHid
         public event EventHandler<DeviceEventArgs> DeviceDisconnected;
         #endregion
 
-        #region WiimoteFound Event
-        protected virtual void OnWiimoteFound(DeviceInfoEventArgs e)
+        #region DeviceFound Event
+        protected virtual void OnDeviceFound(DeviceInfoEventArgs e)
         {
             if (DeviceFound == null)
                 return;
@@ -149,8 +156,8 @@ namespace WiiDeviceLibrary.Bluetooth.MsHid
         public event EventHandler<DeviceInfoEventArgs> DeviceFound;
         #endregion
 
-        #region WiimoteLost Event
-        protected virtual void OnWiimoteLost(DeviceInfoEventArgs e)
+        #region DeviceLost Event
+        protected virtual void OnDeviceLost(DeviceInfoEventArgs e)
         {
             if (DeviceLost == null)
                 return;
