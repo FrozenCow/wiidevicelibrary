@@ -235,14 +235,14 @@ namespace WiiDeviceLibrary.Bluetooth.MsBluetooth
 
         public static IEnumerable<Guid> GetServiceGuids(BluetoothDeviceInfo deviceInfo)
         {
-            byte[] servicesBytes = new byte[16 * 32];
-            int servicesBytesLength = servicesBytes.Length;
-            int result = NativeMethods.BluetoothEnumerateInstalledServices(IntPtr.Zero, ref deviceInfo, ref servicesBytesLength, servicesBytes);
+            int recordCount = 16;
+            byte[] servicesBytes = new byte[recordCount * 32];
+            int result = NativeMethods.BluetoothEnumerateInstalledServices(IntPtr.Zero, ref deviceInfo, ref recordCount, servicesBytes);
             HandleResult(result);
 
             Guid serviceGuid;
-            Guid[] services = new Guid[servicesBytesLength];
-            for (int i = 0; i < servicesBytesLength; i++)
+            Guid[] services = new Guid[recordCount];
+            for (int i = 0; i < recordCount; i++)
             {
                 byte[] serviceBytes = new byte[16];
                 Array.Copy(servicesBytes, i * 16, serviceBytes, 0, 16);
