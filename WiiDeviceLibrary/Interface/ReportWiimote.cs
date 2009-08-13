@@ -492,10 +492,13 @@ namespace WiiDeviceLibrary
         /// <param name="buff">Data buffer</param>
         protected int ParseAccelerometer(byte[] buff, int offset)
         {
-            Accelerometer.Raw.X = buff[offset];
-            Accelerometer.Raw.Y = buff[offset + 1];
-            Accelerometer.Raw.Z = buff[offset + 2];
-            UpdateCalibratedAccelerometer();
+            if (Accelerometer != null)
+            {
+                Accelerometer.Raw.X = buff[offset];
+                Accelerometer.Raw.Y = buff[offset + 1];
+                Accelerometer.Raw.Z = buff[offset + 2];
+                UpdateCalibratedAccelerometer();
+            }
             return 3;
         }
 
