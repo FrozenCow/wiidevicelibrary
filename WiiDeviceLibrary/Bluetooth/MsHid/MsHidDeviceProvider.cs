@@ -24,7 +24,7 @@ using System.IO;
 
 namespace WiiDeviceLibrary.Bluetooth.MsHid
 {
-    public class MsHidDeviceProvider: IDeviceProvider
+    public class MsHidDeviceProvider : IDeviceProvider
     {
         // VID = Nintendo, PID = Wiimote
         private const int VID = 0x057e;
@@ -35,7 +35,7 @@ namespace WiiDeviceLibrary.Bluetooth.MsHid
         {
             get { return _FoundDevices.Values; }
         }
-	
+
         private ICollection<IDevice> _ConnectedDevices = new List<IDevice>();
         public ICollection<IDevice> ConnectedDevices
         {
@@ -48,7 +48,7 @@ namespace WiiDeviceLibrary.Bluetooth.MsHid
             get { return _UseSetOutputReport; }
             set { _UseSetOutputReport = value; }
         }
-	
+
 
         public bool IsDiscovering
         {
@@ -67,6 +67,21 @@ namespace WiiDeviceLibrary.Bluetooth.MsHid
         public void StopDiscovering()
         {
 
+        }
+
+        public static IEnumerable<IDeviceInfo> GetAllDevices()
+        {
+            foreach (string devicePath in MsHidHelper.GetDevicePaths())
+            {
+                SafeFileHandle fileHandle = MsHidHelper.CreateFileHandle(devicePath);
+
+                int vendorId, productId;
+                if (MsHidHelper.TryGetHidInfo(fileHandle, out vendorId, out productId) && vendorId == VID && productId == PID)
+                {
+                    fileHandle.Close();
+                    yield return new MsHidDeviceInfo(devicePath);
+                }
+            }
         }
 
         public void Update()
