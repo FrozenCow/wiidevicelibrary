@@ -187,6 +187,8 @@ namespace WiiDeviceLibrary.Bluetooth.Bluesoleil
         public IDevice Connect(IDeviceInfo deviceInfo)
         {
             BluesoleilDeviceInfo bluetoothDeviceInfo = (BluesoleilDeviceInfo)deviceInfo;
+            Thread.Sleep(100);
+
             BluetoothConnection connection = BluesoleilService.Instance.ConnectService(bluetoothDeviceInfo.Service);
 
             ReportDevice device = null;
