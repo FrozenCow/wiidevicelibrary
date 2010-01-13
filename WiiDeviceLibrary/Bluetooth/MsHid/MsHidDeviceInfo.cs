@@ -61,5 +61,10 @@ namespace WiiDeviceLibrary.Bluetooth.MsHid
         {
             return DevicePath.GetHashCode();
         }
+
+        public override string ToString()
+        {
+            return DevicePath;
+        }
     }
 }
