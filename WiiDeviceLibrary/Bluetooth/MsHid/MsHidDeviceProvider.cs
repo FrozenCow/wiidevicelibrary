@@ -86,7 +86,7 @@ namespace WiiDeviceLibrary.Bluetooth.MsHid
 
         public void Update()
         {
-            List<string> devicePaths = new List<string>(MsHidHelper.GetDevicePaths());
+            List<string> devicePaths = new List<string>(MsHidDeviceProviderHelper.GetWiiDevicePaths());
 
             foreach (string devicePath in devicePaths)
             {

@@ -61,6 +61,15 @@ namespace WiiDeviceLibrary.Bluetooth.MsHid
             }
         }
 
+        public static IEnumerable<string> GetWiiDevicePaths()
+        {
+            foreach (KeyValuePair<string, SafeFileHandle> pair in GetWiiDeviceHandles())
+            {
+                pair.Value.Dispose();
+                yield return pair.Key;
+            }
+        }
+
         public static bool TryConnect(ReportDevice device, Stream deviceStream, string devicePath, SafeFileHandle fileHandle)
         {
             bool success;
