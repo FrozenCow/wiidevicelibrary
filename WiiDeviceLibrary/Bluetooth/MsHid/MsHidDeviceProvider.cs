@@ -49,7 +49,6 @@ namespace WiiDeviceLibrary.Bluetooth.MsHid
             set { _UseSetOutputReport = value; }
         }
 
-
         public bool IsDiscovering
         {
             get { return false; }
@@ -120,23 +119,52 @@ namespace WiiDeviceLibrary.Bluetooth.MsHid
             MsHidDeviceInfo hidDeviceInfo = deviceInfo as MsHidDeviceInfo;
             if (hidDeviceInfo == null)
                 throw new ArgumentException("The specified DeviceInfo does not belong to this DeviceProvider.", "deviceInfo");
-            string devicePath = hidDeviceInfo.DevicePath;
 
-            Stream hidStream = new UnsureMsHidStream(devicePath);
 
-            ReportWiimote wiimote = new ReportWiimote(deviceInfo, hidStream);
-            wiimote.Initialize();
+            ReportWiimote wiimote = TryConnect(hidDeviceInfo);
+            if (wiimote == null)
+            {
+                UseSetOutputReport = !UseSetOutputReport;
+                wiimote = TryConnect(hidDeviceInfo);
+                if (wiimote == null)
+                    throw new TimeoutException("Connecting timed out using both hid-output methods.");
+            }
+
+            MsHidDeviceProviderHelper.SetDevicePathConnected(hidDeviceInfo.DevicePath, true);
 
             ConnectedDevices.Add(wiimote);
-            wiimote.Disconnected += new EventHandler(wiimote_Disconnected);
-            OnDeviceConnected(new DeviceEventArgs(wiimote));
+
+            wiimote.Disconnected += device_Disconnected;
+
             return wiimote;
         }
 
-        void wiimote_Disconnected(object sender, EventArgs e)
+        private ReportWiimote TryConnect(MsHidDeviceInfo deviceInfo)
         {
-            ReportWiimote wiimote = sender as ReportWiimote;
+            Stream hidStream = UseSetOutputReport
+                ? new MsHidSetOutputReportStream(deviceInfo.DevicePath)
+                : new MsHidStream(deviceInfo.DevicePath);
+
+            try
+            {
+                ReportWiimote wiimote = new ReportWiimote(deviceInfo, hidStream);
+                wiimote.Initialize();
+                return wiimote;
+            }
+            catch(TimeoutException)
+            {
+                hidStream.Dispose();
+                return null;
+            }
+        }
+
+        void device_Disconnected(object sender, EventArgs e)
+        {
+            ReportWiimote wiimote = (ReportWiimote)sender;
+            MsHidDeviceInfo deviceInfo = (MsHidDeviceInfo)wiimote.DeviceInfo;
+            wiimote.Disconnected -= device_Disconnected;
             ConnectedDevices.Remove(wiimote);
+            MsHidDeviceProviderHelper.SetDevicePathConnected(deviceInfo.DevicePath, false);
             OnDeviceDisconnected(new DeviceEventArgs(wiimote));
         }
 
