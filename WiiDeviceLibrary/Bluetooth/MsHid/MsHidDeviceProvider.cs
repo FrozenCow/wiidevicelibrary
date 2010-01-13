@@ -49,6 +49,7 @@ namespace WiiDeviceLibrary.Bluetooth.MsHid
             set { _UseSetOutputReport = value; }
         }
 
+
         public bool IsDiscovering
         {
             get { return false; }
@@ -120,42 +121,26 @@ namespace WiiDeviceLibrary.Bluetooth.MsHid
             if (hidDeviceInfo == null)
                 throw new ArgumentException("The specified DeviceInfo does not belong to this DeviceProvider.", "deviceInfo");
 
+            Stream hidStream = new UnsureMsHidStream(hidDeviceInfo.DevicePath);
 
-            ReportWiimote wiimote = TryConnect(hidDeviceInfo);
-            if (wiimote == null)
-            {
-                UseSetOutputReport = !UseSetOutputReport;
-                wiimote = TryConnect(hidDeviceInfo);
-                if (wiimote == null)
-                    throw new TimeoutException("Connecting timed out using both hid-output methods.");
-            }
-
-            MsHidDeviceProviderHelper.SetDevicePathConnected(hidDeviceInfo.DevicePath, true);
-
-            ConnectedDevices.Add(wiimote);
-
-            wiimote.Disconnected += device_Disconnected;
-
-            return wiimote;
-        }
-
-        private ReportWiimote TryConnect(MsHidDeviceInfo deviceInfo)
-        {
-            Stream hidStream = UseSetOutputReport
-                ? new MsHidSetOutputReportStream(deviceInfo.DevicePath)
-                : new MsHidStream(deviceInfo.DevicePath);
-
+            ReportWiimote wiimote;
             try
             {
-                ReportWiimote wiimote = new ReportWiimote(deviceInfo, hidStream);
+                wiimote = new ReportWiimote(deviceInfo, hidStream);
                 wiimote.Initialize();
-                return wiimote;
             }
-            catch(TimeoutException)
+            catch (Exception)
             {
                 hidStream.Dispose();
-                return null;
+                throw;
             }
+
+            wiimote.Disconnected += device_Disconnected;
+            ConnectedDevices.Add(wiimote);
+            MsHidDeviceProviderHelper.SetDevicePathConnected(hidDeviceInfo.DevicePath, true);
+
+            OnDeviceConnected(new DeviceEventArgs(wiimote));
+            return wiimote;
         }
 
         void device_Disconnected(object sender, EventArgs e)
