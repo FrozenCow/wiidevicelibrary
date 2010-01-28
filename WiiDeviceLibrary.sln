@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinuxGUITest", "LinuxGUITest\LinuxGUITest.csproj", "{8E819FF4-F6AB-42E2-A275-4B9816BB5D1D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiiDeviceLibrary", "WiiDeviceLibrary\WiiDeviceLibrary.csproj", "{07CC268B-22FE-4B59-AAE4-29EC88EEDE50}"
