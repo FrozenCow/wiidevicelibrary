@@ -68,6 +68,11 @@ namespace WiiDeviceLibrary.Bluetooth.MsBluetooth
         {
             return Address.GetHashCode();
         }
+
+        public override string ToString()
+        {
+            return Address.ToString();
+        }
         #endregion
     }
 }

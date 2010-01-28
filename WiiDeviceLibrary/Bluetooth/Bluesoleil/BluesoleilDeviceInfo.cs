@@ -74,6 +74,11 @@ namespace WiiDeviceLibrary.Bluetooth.Bluesoleil
         {
             return Address.GetHashCode();
         }
+
+        public override string ToString()
+        {
+            return Address.ToString();
+        }
         #endregion
     }
 }

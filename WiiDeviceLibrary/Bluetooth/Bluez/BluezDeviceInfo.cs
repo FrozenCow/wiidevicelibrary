@@ -51,5 +51,10 @@ namespace WiiDeviceLibrary.Bluetooth.Bluez
 			_Name = name;
 			_LastSeen = DateTime.Now;
 		}
+
+        public override string ToString()
+        {
+            return Address.ToString();
+        }
     }
 }
