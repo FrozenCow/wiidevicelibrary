@@ -45,7 +45,7 @@ namespace WiiDeviceLibrary
             get { return outputBuffer; }
         }
 
-        protected bool IsConnected
+        public bool IsConnected
         {
             get { return isConnected; }
         }

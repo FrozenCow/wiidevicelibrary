@@ -30,6 +30,11 @@ namespace WiiDeviceLibrary
         }
 
         /// <summary>
+        /// Gets whether the device is connected.
+        /// </summary>
+        bool IsConnected { get; }
+
+        /// <summary>
         /// Disconnects the bluetooth connection to the device.
         /// </summary>
         void Disconnect();
