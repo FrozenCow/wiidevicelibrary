@@ -124,7 +124,8 @@ namespace WiiDeviceLibrary
         public override void Initialize()
         {
             UpdateStatus();
-            ReadCalibrationData();
+            if (Accelerometer == null)
+                ReadCalibrationData();
         }
 
         protected void ReadCalibrationData()
@@ -410,13 +411,15 @@ namespace WiiDeviceLibrary
                         // Complete the _PartialAccelerometerZ field
                         _PartialAccelerometerZ = (ushort)(_PartialAccelerometerZ | ((report[2] & 60) >> 3) | ((report[1] & 60) >> 5));
 
-                        // construct the new accelerometer from now completed data
-                        if (Accelerometer != null)
-                        {
-                            Accelerometer.Raw.X = _PartialAccelerometerX;
-                            Accelerometer.Raw.Y = report[3];
-                            Accelerometer.Raw.Z = _PartialAccelerometerZ;
-                        }
+                        // Initialize the accelerometer if it was not yet initialized (should never happen).
+                        if (Accelerometer == null)
+                            ReadCalibrationData();
+
+                        // Construct the new accelerometer-values from now completed data
+                        Accelerometer.Raw.X = _PartialAccelerometerX;
+                        Accelerometer.Raw.Y = report[3];
+                        Accelerometer.Raw.Z = _PartialAccelerometerZ;
+
                         UpdateCalibratedAccelerometer();
 
                         FullIRBeacon irBeacon;
