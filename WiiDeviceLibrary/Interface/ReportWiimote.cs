@@ -27,7 +27,7 @@ namespace WiiDeviceLibrary
     public class ReportWiimote : ReportDevice, IWiimote
     {
         #region Fields
-        private IRMode irMode = IRMode.Off;
+        private IRMode _IrMode = IRMode.Off;
         private WiimoteLeds _Leds;
         private bool _IsRumbling;
         private bool _IsSpeakerEnabled;
@@ -36,11 +36,25 @@ namespace WiiDeviceLibrary
         private BasicIRBeacon[] _IRBeacons = new BasicIRBeacon[4];
         private Accelerometer _Accelerometer;
         private IWiimoteExtension _Extension = null;
+        private bool _IrSensorEnabled = false;
+
+        // Partial data received on InputReport.ButtonsAccelerometer36IRa for the interlaced reporting mode 
+        // to be used when an InputReport.ButtonsAccelerometer36IRb is received.
+        private ushort _PartialAccelerometerX = 0;
+        private ushort _PartialAccelerometerZ = 0;
+        private bool _PartialIRBeaconOneResult = false;
+        private bool _PartialIRBeaconTwoResult = false;
+
         public event EventHandler<WiimoteExtensionEventArgs> ExtensionAttached;
 		public event EventHandler<WiimoteExtensionEventArgs> ExtensionDetached;
         #endregion
 
         #region Public Properties
+        public bool IrSensorEnabled
+        {
+            get { return _IrSensorEnabled; }
+        }
+
         public WiimoteLeds Leds
         {
             get { return _Leds; }
@@ -229,6 +243,11 @@ namespace WiiDeviceLibrary
 
         public void SetIRMode(IRMode irMode)
         {
+            SetIRMode(irMode, IRSensitivity.Default);
+        }
+
+        public void SetIRMode(IRMode irMode, IRSensitivity sensitivity)
+        {
             bool enabled = (irMode != IRMode.Off);
 
             // Enable Pixel Clock.
@@ -246,28 +265,18 @@ namespace WiiDeviceLibrary
             {
                 // Configure the camera.
                 WriteMemory(0x04b00030, 0x08);
-                // TODO: Make sensitivity configurable.
-                // Set the sensitivity of the camera.
 
-                // Wii level 1
-                //WriteData(0xb00000, new byte[] { 0x02, 0x00, 0x00, 0x71, 0x01, 0x00, 0x64, 0x00, 0xfe });
-                //WriteData(0xb0001a, new byte[] { 0xfd, 0x05 });
-
-                // Wii level 5
-                //WriteData(0xb00000, new byte[] { 0x07, 0x00, 0x00, 0x71, 0x01, 0x00, 0x72, 0x00, 0x20 });
-                //WriteData(0xb0001a, new byte[] { 0x1f, 0x03 });
-
-                // Max sensitivity (inio's suggestion)
-                //WriteData(0x04b00000, new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x90, 0x00, 0x41 });
-                //WriteData(0x04b0001a, new byte[] { 0x40, 0x00 });
-
-                // Marcan's suggestion.
-                WriteMemory(0x4b00000, new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x90, 0x00, 0xc0 });
-                WriteMemory(0x4b0001a, new byte[] { 0x40, 0x00 });
+                if (sensitivity != null)
+                {
+                    // Set sensitivity configuration.
+                    WriteMemory(0x4b00000, sensitivity.ConfigurationBlock1);
+                    WriteMemory(0x4b0001a, sensitivity.ConfigurationBlock2);
+                }
 
                 // Set the ir-mode
                 WriteMemory(0x04b00033, (byte)irMode);
             }
+            _IrSensorEnabled = enabled;
         }
 
 
@@ -287,7 +296,7 @@ namespace WiiDeviceLibrary
                     ReportingMode = (ReportingMode)type;
 
                 IRMode irMode = GetIrMode(type);
-                if (this.irMode != irMode)
+                if (this._IrMode != irMode)
                 {
                     for (int i = 0; i < _CachedIRBeacons.Length; i++)
                     {
@@ -307,7 +316,7 @@ namespace WiiDeviceLibrary
                         _CachedIRBeacons[i] = newBeacon;
                         _IRBeacons[i] = null;
                     }
-                    this.irMode = irMode;
+                    this._IrMode = irMode;
                 }
             }
             switch (type)
@@ -460,12 +469,6 @@ namespace WiiDeviceLibrary
                 OnUpdated();
             return true;
         }
-        // Partial data received on InputReport.ButtonsAccelerometer36IRa for the interlaced reporting mode 
-        // to be used when an InputReport.ButtonsAccelerometer36IRb is received.
-        private ushort _PartialAccelerometerX = 0;
-        private ushort _PartialAccelerometerZ = 0;
-        private bool _PartialIRBeaconOneResult = false;
-        private bool _PartialIRBeaconTwoResult = false;
 
         #region Data Report Parsing
 
@@ -582,9 +585,7 @@ namespace WiiDeviceLibrary
             bool extensionConnected = (buff[3] & 0x02) != 0;
 
             _IsSpeakerEnabled = (buff[3] & 0x04) != 0;
-
-            // TODO: Make IrSensorEnabled publicly available.
-            //bool irSensorEnabled = (buff[3] & 0x08) != 0;
+            _IrSensorEnabled = (buff[3] & 0x08) != 0;
             _Leds =
                 ((buff[3] & 0x10) == 0 ? WiimoteLeds.None : WiimoteLeds.Led1) |
                 ((buff[3] & 0x20) == 0 ? WiimoteLeds.None : WiimoteLeds.Led2) |
