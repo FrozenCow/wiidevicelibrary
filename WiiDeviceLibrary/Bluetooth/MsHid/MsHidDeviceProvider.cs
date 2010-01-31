@@ -49,14 +49,10 @@ namespace WiiDeviceLibrary.Bluetooth.MsHid
             set { _UseSetOutputReport = value; }
         }
 
-
+        private bool _IsDiscovering = false;
         public bool IsDiscovering
         {
-            get { return false; }
-        }
-
-        public MsHidDeviceProvider()
-        {
+            get { return _IsDiscovering; }
         }
 
         public void StartDiscovering()
@@ -86,6 +82,9 @@ namespace WiiDeviceLibrary.Bluetooth.MsHid
 
         public void Update()
         {
+            if (IsDiscovering)
+                throw new InvalidOperationException("This provider is already discovering.");
+            _IsDiscovering = true;
             List<string> devicePaths = new List<string>(MsHidDeviceProviderHelper.GetWiiDevicePaths());
 
             foreach (string devicePath in devicePaths)
@@ -113,6 +112,7 @@ namespace WiiDeviceLibrary.Bluetooth.MsHid
                     _FoundDevices.Remove(devicePathToBeRemoved);
                 }
             }
+            _IsDiscovering = false;
         }
 
         public IDevice Connect(IDeviceInfo deviceInfo)
