@@ -52,6 +52,10 @@ namespace WiiDeviceLibrary.Bluetooth.Bluesoleil
             get { return discoveringThread != null; }
         }
 
+        public static int NotReadySleepTimeout = 5000;
+        public static int PostBrowseSleepTimeout = 2000;
+        public static int PollSleepTimeout = 1000;
+
         public BluesoleilDeviceProvider()
         {
         }
@@ -76,6 +80,7 @@ namespace WiiDeviceLibrary.Bluetooth.Bluesoleil
         }
 
         private TimeSpan pollingTime = TimeSpan.FromSeconds(1);
+
         protected void EnsureBluesoleilStarted(BluesoleilService bluesoleil)
         {
             if (!bluesoleil.IsStarted)
@@ -117,7 +122,7 @@ namespace WiiDeviceLibrary.Bluetooth.Bluesoleil
                     catch (BluesoleilNotReadyException)
                     {
                         // Happens when bluetooth is stopped or when the bluetooth-dongle is unplugged.
-                        Thread.Sleep(5000);
+                        Thread.Sleep(NotReadySleepTimeout);
                         continue;
                     }
 
@@ -138,7 +143,7 @@ namespace WiiDeviceLibrary.Bluetooth.Bluesoleil
                         {
                             // Scan for bluetooth-devices (like devices).
                             services = bluesoleil.BrowseServices(device);
-                            Thread.Sleep(1000);
+                            Thread.Sleep(PostBrowseSleepTimeout);
                         }
                         catch (BluesoleilFailException)
                         {
@@ -168,7 +173,7 @@ namespace WiiDeviceLibrary.Bluetooth.Bluesoleil
                         OnDeviceLost(notFoundDeviceInfo);
                     }
 
-                    Thread.Sleep(1000);
+                    Thread.Sleep(PollSleepTimeout);
                 }
                 bluesoleil.ConnectionClosed -= OnConnectionClosed;
                 bluesoleil.Dispose();
