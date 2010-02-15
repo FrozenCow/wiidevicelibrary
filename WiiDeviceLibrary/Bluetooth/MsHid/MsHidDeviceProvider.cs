@@ -121,26 +121,50 @@ namespace WiiDeviceLibrary.Bluetooth.MsHid
             if (hidDeviceInfo == null)
                 throw new ArgumentException("The specified DeviceInfo does not belong to this DeviceProvider.", "deviceInfo");
 
-            Stream hidStream = new UnsureMsHidStream(hidDeviceInfo.DevicePath);
 
             ReportWiimote wiimote;
-            try
+            if (!TryConnect(hidDeviceInfo, out wiimote))
             {
-                wiimote = new ReportWiimote(deviceInfo, hidStream);
-                wiimote.Initialize();
+                UseSetOutputReport = !UseSetOutputReport;
+                if (!TryConnect(hidDeviceInfo, out wiimote))
+                {
+                    throw new DeviceConnectException("Both methods of connecting timed out.");
+                }
             }
-            catch (Exception)
-            {
-                hidStream.Dispose();
-                throw;
-            }
-
+            
             wiimote.Disconnected += device_Disconnected;
             ConnectedDevices.Add(wiimote);
             MsHidDeviceProviderHelper.SetDevicePathConnected(hidDeviceInfo.DevicePath, true);
 
             OnDeviceConnected(new DeviceEventArgs(wiimote));
             return wiimote;
+        }
+
+        private bool TryConnect(MsHidDeviceInfo hidDeviceInfo, out ReportWiimote wiimote)
+        {
+            Stream hidStream;
+            if (UseSetOutputReport)
+                hidStream = new MsHidSetOutputReportStream(hidDeviceInfo.DevicePath);
+            else
+                hidStream = new MsHidStream(hidDeviceInfo.DevicePath);
+
+            try
+            {
+                wiimote = new ReportWiimote(hidDeviceInfo, hidStream);
+                wiimote.Initialize();
+            }
+            catch (TimeoutException)
+            {
+                hidStream.Dispose();
+                wiimote = null;
+                return false;
+            }
+            catch (Exception)
+            {
+                hidStream.Dispose();
+                throw;
+            }
+            return true;
         }
 
         void device_Disconnected(object sender, EventArgs e)
