@@ -31,7 +31,7 @@ namespace WiiDeviceLibrary.Bluetooth.MsHid
         public IDeviceProvider Create()
         {
             MsHidDeviceProvider deviceProvider = new MsHidDeviceProvider();
-            deviceProvider.Update();
+            //deviceProvider.Update(); //Need to be update after the event "DeviceFound" have been registered (in MainForm)
             return deviceProvider;
         }
     }
