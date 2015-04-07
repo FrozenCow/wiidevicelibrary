@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{098A8875-4170-4C01-BBC0-7B63F1EBDD1A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>WiiDeviceLibraryUnity</RootNamespace>
+    <AssemblyName>WiiDeviceLibrary-Unity</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="..\WiiDeviceLibrary\Bluetooth\BluetoothAddress.cs">
+      <Link>Bluetooth\BluetoothAddress.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Bluetooth\DeviceProviderFactoryHelper.cs">
+      <Link>Bluetooth\DeviceProviderFactoryHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Bluetooth\Bluesoleil\BluesoleilDeviceInfo.cs">
+      <Link>Bluetooth\Bluesoleil\BluesoleilDeviceInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Bluetooth\Bluesoleil\BluesoleilDeviceProvider.cs">
+      <Link>Bluetooth\Bluesoleil\BluesoleilDeviceProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Bluetooth\Bluesoleil\BluesoleilDeviceProviderFactory.cs">
+      <Link>Bluetooth\Bluesoleil\BluesoleilDeviceProviderFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Bluetooth\Bluesoleil\BluesoleilExceptions.cs">
+      <Link>Bluetooth\Bluesoleil\BluesoleilExceptions.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Bluetooth\Bluesoleil\BluesoleilService.cs">
+      <Link>Bluetooth\Bluesoleil\BluesoleilService.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Bluetooth\Bluesoleil\BluetoothConnection.cs">
+      <Link>Bluetooth\Bluesoleil\BluetoothConnection.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Bluetooth\Bluesoleil\BluetoothConnectionEventArgs.cs">
+      <Link>Bluetooth\Bluesoleil\BluetoothConnectionEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Bluetooth\Bluesoleil\BluetoothConnectionStatus.cs">
+      <Link>Bluetooth\Bluesoleil\BluetoothConnectionStatus.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Bluetooth\Bluesoleil\BluetoothDevice.cs">
+      <Link>Bluetooth\Bluesoleil\BluetoothDevice.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Bluetooth\Bluesoleil\BluetoothDeviceEventArgs.cs">
+      <Link>Bluetooth\Bluesoleil\BluetoothDeviceEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Bluetooth\Bluesoleil\BluetoothDeviceInfoEventArgs.cs">
+      <Link>Bluetooth\Bluesoleil\BluetoothDeviceInfoEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Bluetooth\Bluesoleil\BluetoothService.cs">
+      <Link>Bluetooth\Bluesoleil\BluetoothService.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Bluetooth\Bluesoleil\NativeMethods.cs">
+      <Link>Bluetooth\Bluesoleil\NativeMethods.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Bluetooth\Bluez\BluezDeviceInfo.cs">
+      <Link>Bluetooth\Bluez\BluezDeviceInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Bluetooth\Bluez\BluezDeviceProvider.cs">
+      <Link>Bluetooth\Bluez\BluezDeviceProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Bluetooth\Bluez\BluezDeviceProviderFactory.cs">
+      <Link>Bluetooth\Bluez\BluezDeviceProviderFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Bluetooth\Bluez\BluezStream.cs">
+      <Link>Bluetooth\Bluez\BluezStream.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Bluetooth\Bluez\NativeMethods.cs">
+      <Link>Bluetooth\Bluez\NativeMethods.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Bluetooth\MsBluetooth\MsBluetoothDeviceInfo.cs">
+      <Link>Bluetooth\MsBluetooth\MsBluetoothDeviceInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Bluetooth\MsBluetooth\MsBluetoothDeviceProvider.cs">
+      <Link>Bluetooth\MsBluetooth\MsBluetoothDeviceProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Bluetooth\MsBluetooth\MsBluetoothDeviceProviderFactory.cs">
+      <Link>Bluetooth\MsBluetooth\MsBluetoothDeviceProviderFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Bluetooth\MsBluetooth\NativeMethods.cs">
+      <Link>Bluetooth\MsBluetooth\NativeMethods.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Bluetooth\MsHid\MsHidDeviceInfo.cs">
+      <Link>Bluetooth\MsHid\MsHidDeviceInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Bluetooth\MsHid\MsHidDeviceProvider.cs">
+      <Link>Bluetooth\MsHid\MsHidDeviceProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Bluetooth\MsHid\MsHidDeviceProviderFactory.cs">
+      <Link>Bluetooth\MsHid\MsHidDeviceProviderFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Bluetooth\MsHid\MsHidDeviceProviderHelper.cs">
+      <Link>Bluetooth\MsHid\MsHidDeviceProviderHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Bluetooth\MsHid\MsHidHelper.cs">
+      <Link>Bluetooth\MsHid\MsHidHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Bluetooth\MsHid\MsHidSetOutputReportStream.cs">
+      <Link>Bluetooth\MsHid\MsHidSetOutputReportStream.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Bluetooth\MsHid\MsHidStream.cs">
+      <Link>Bluetooth\MsHid\MsHidStream.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Bluetooth\MsHid\NativeMethods.cs">
+      <Link>Bluetooth\MsHid\NativeMethods.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Bluetooth\MsHid\UnsureMsHidStream.cs">
+      <Link>Bluetooth\MsHid\UnsureMsHidStream.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Extensions\ClassicControllerButtons.cs">
+      <Link>Extensions\ClassicControllerButtons.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Extensions\ClassicControllerExtension.cs">
+      <Link>Extensions\ClassicControllerExtension.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Extensions\ClassicControllerExtensionFactory.cs">
+      <Link>Extensions\ClassicControllerExtensionFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Extensions\GuitarButtons.cs">
+      <Link>Extensions\GuitarButtons.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Extensions\GuitarExtension.cs">
+      <Link>Extensions\GuitarExtension.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Extensions\GuitarExtensionFactory.cs">
+      <Link>Extensions\GuitarExtensionFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Extensions\NunchukButtons.cs">
+      <Link>Extensions\NunchukButtons.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Extensions\NunchukExtension.cs">
+      <Link>Extensions\NunchukExtension.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Extensions\NunchukExtensionFactory.cs">
+      <Link>Extensions\NunchukExtensionFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\Accelerometer.cs">
+      <Link>Interface\Accelerometer.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\AccelerometerAxes.cs">
+      <Link>Interface\AccelerometerAxes.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\AccelerometerCalibration.cs">
+      <Link>Interface\AccelerometerCalibration.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\AnalogStick.cs">
+      <Link>Interface\AnalogStick.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\AnalogStickAxes.cs">
+      <Link>Interface\AnalogStickAxes.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\AnalogStickCalibration.cs">
+      <Link>Interface\AnalogStickCalibration.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\BasicIRBeacon.cs">
+      <Link>Interface\BasicIRBeacon.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\DeviceConnectException.cs">
+      <Link>Interface\DeviceConnectException.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\DeviceEventArgs.cs">
+      <Link>Interface\DeviceEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\DeviceInfoEventArgs.cs">
+      <Link>Interface\DeviceInfoEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\DeviceProviderRegistry.cs">
+      <Link>Interface\DeviceProviderRegistry.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\DummyExtension.cs">
+      <Link>Interface\DummyExtension.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\ExtendedIRBeacon.cs">
+      <Link>Interface\ExtendedIRBeacon.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\FullIRBeacon.cs">
+      <Link>Interface\FullIRBeacon.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\IBalanceBoard.cs">
+      <Link>Interface\IBalanceBoard.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\IBluetoothDeviceInfo.cs">
+      <Link>Interface\IBluetoothDeviceInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\IDevice.cs">
+      <Link>Interface\IDevice.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\IDeviceInfo.cs">
+      <Link>Interface\IDeviceInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\IDeviceProvider.cs">
+      <Link>Interface\IDeviceProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\IDeviceProviderFactory.cs">
+      <Link>Interface\IDeviceProviderFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\InputReport.cs">
+      <Link>Interface\InputReport.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\InvalidExtension.cs">
+      <Link>Interface\InvalidExtension.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\IRMode.cs">
+      <Link>Interface\IRMode.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\IRSensitivity.cs">
+      <Link>Interface\IRSensitivity.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\IWiiDevice.cs">
+      <Link>Interface\IWiiDevice.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\IWiimote.cs">
+      <Link>Interface\IWiimote.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\IWiimoteExtension.cs">
+      <Link>Interface\IWiimoteExtension.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\IWiimoteExtensionFactory.cs">
+      <Link>Interface\IWiimoteExtensionFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\OutputReport.cs">
+      <Link>Interface\OutputReport.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\Pcm8ToAdpcm4Stream.cs">
+      <Link>Interface\Pcm8ToAdpcm4Stream.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\PressureCalibration.cs">
+      <Link>Interface\PressureCalibration.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\ReportBalanceBoard.cs">
+      <Link>Interface\ReportBalanceBoard.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\ReportDevice.cs">
+      <Link>Interface\ReportDevice.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\ReportingMode.cs">
+      <Link>Interface\ReportingMode.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\ReportWiimote.cs">
+      <Link>Interface\ReportWiimote.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\UnknownExtension.cs">
+      <Link>Interface\UnknownExtension.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\WiimoteButtons.cs">
+      <Link>Interface\WiimoteButtons.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\WiimoteExtensionEventArgs.cs">
+      <Link>Interface\WiimoteExtensionEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\WiimoteExtensionRegistry.cs">
+      <Link>Interface\WiimoteExtensionRegistry.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\WiimoteLeds.cs">
+      <Link>Interface\WiimoteLeds.cs</Link>
+    </Compile>
+    <Compile Include="..\WiiDeviceLibrary\Interface\WiimoteSpeakerStream.cs">
+      <Link>Interface\WiimoteSpeakerStream.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <None Include="..\WiiDeviceLibrary\WiiDeviceLibrary.csproj">
+      <Link>WiiDeviceLibrary.csproj</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Bluetooth\" />
+    <Folder Include="Extensions\" />
+    <Folder Include="Interface\" />
+  </ItemGroup>
+</Project>
