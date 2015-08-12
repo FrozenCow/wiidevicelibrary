@@ -33,8 +33,8 @@ namespace WiiDeviceLibrary
         {
             Factories.Add(new WiiDeviceLibrary.Bluetooth.Bluez.BluezDeviceProviderFactory());
             Factories.Add(new WiiDeviceLibrary.Bluetooth.Bluesoleil.BluesoleilDeviceProviderFactory());
-            Factories.Add(new WiiDeviceLibrary.Bluetooth.MsBluetooth.MsBluetoothDeviceProviderFactory());
             Factories.Add(new WiiDeviceLibrary.Bluetooth.MsHid.MsHidDeviceProviderFactory());
+            Factories.Add(new WiiDeviceLibrary.Bluetooth.MsBluetooth.MsBluetoothDeviceProviderFactory()); //This provider don't support new wiimote with motion plus inside
         }
 
         public static IDeviceProviderFactory GetSupportedFactory()

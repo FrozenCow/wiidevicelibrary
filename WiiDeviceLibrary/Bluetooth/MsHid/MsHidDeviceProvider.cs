@@ -29,6 +29,7 @@ namespace WiiDeviceLibrary.Bluetooth.MsHid
         // VID = Nintendo, PID = Wiimote
         private const int VID = 0x057e;
         private const int PID = 0x0306;
+        private const int PID_TR = 0x0330;
 
         private IDictionary<string, IDeviceInfo> _FoundDevices = new Dictionary<string, IDeviceInfo>();
         public ICollection<IDeviceInfo> FoundDevices
@@ -72,7 +73,7 @@ namespace WiiDeviceLibrary.Bluetooth.MsHid
                 SafeFileHandle fileHandle = MsHidHelper.CreateFileHandle(devicePath);
 
                 int vendorId, productId;
-                if (MsHidHelper.TryGetHidInfo(fileHandle, out vendorId, out productId) && vendorId == VID && productId == PID)
+                if (MsHidHelper.TryGetHidInfo(fileHandle, out vendorId, out productId) && vendorId == VID && (productId == PID || productId == PID_TR))
                 {
                     fileHandle.Close();
                     yield return new MsHidDeviceInfo(devicePath);
